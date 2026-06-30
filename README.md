@@ -23,4 +23,19 @@ default — defined once, propagated by tooling, never hand-copied or allowed to
 - **Reporting / CI gate:** `scripts/check_drift.py` flags divergence without merging. Two
   separate lanes — do not conflate them.
 
+## Releasing (reusable-workflow versioning)
+
+Consumers pin callers to a **major** tag (`...@v1`). We cut an immutable patch tag and move
+the major tag to it:
+
+1. Land the change on `main` (the commit must contain `.github/workflows/reusable-*.yml`).
+2. Tag the immutable release: `git tag v1.0.0 && git push origin v1.0.0`.
+3. The [`major-tag`](.github/workflows/major-tag.yml) workflow fires on the 3-part tag and
+   force-moves `v1` to that commit. (First release only: create `v1` once —
+   `git tag v1 v1.0.0 && git push origin v1` — subsequent v1.x re-points are automatic.)
+4. Every later fix repeats step 2 with `v1.1.0`, `v1.2.0`, … and `v1` follows along.
+
+Never let callers pin `@main`. Cut `v2.0.0` (and a new `v2`) only for breaking changes to the
+reusable workflows.
+
 See [`AGENTS.md`](AGENTS.md) for contributor/agent instructions.

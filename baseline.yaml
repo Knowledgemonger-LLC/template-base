@@ -237,21 +237,25 @@ elements:
 
   - path: renovate.json
     tier: 4
-    mechanism: extend
-    source_of_truth: github>Knowledgemonger-LLC/renovate-config
+    mechanism: copy
+    drift: full-file
+    source_of_truth: template/renovate.json.jinja
     applies_to: all
     required: true
     notes: >-
-      Thin file is template-synced (the pointer itself), but dependency RULES live in the
-      external preset: {"extends": ["github>Knowledgemonger-LLC/renovate-config"]}.
-      Renovate is preferred over Dependabot.
+      Thin pointer is COPIED and full-file synced; dependency RULES live in the external
+      preset and are NOT inlined here. DEFERRED EXTERNAL PREREQUISITE: Renovate errors on
+      target repos until Knowledgemonger-LLC/renovate-config exists with a base preset — same
+      "reference is right, target must be created" class as the v1 tag. Preferred over Dependabot.
 
   - path: .pre-commit-config.yaml
     tier: 4
-    mechanism: extend
-    source_of_truth: pkg:pre-commit (org-shared hook repos)
+    mechanism: copy
+    drift: marker-block
+    source_of_truth: template/.pre-commit-config.yaml.jinja
     applies_to: all
     required: false
     notes: >-
-      Hook set differs by stack; references shared hook repos. Scaffolded thin and extended
-      per stack.
+      COPIED with marker-block drift: the managed region (trailing-whitespace, end-of-file-fixer,
+      check-yaml, check-json, detect-secrets) is synced; stack-specific hooks are appended
+      OUTSIDE the region. Uses # comment markers (valid YAML).

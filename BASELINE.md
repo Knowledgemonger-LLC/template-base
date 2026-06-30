@@ -11,7 +11,7 @@ by which it gets there. Generated from [`baseline.yaml`](baseline.yaml) — do n
 | 1 | 4 | copy |
 | 2 | 6 | copy, inherit |
 | 3 | 4 | copy |
-| 4 | 7 | extend |
+| 4 | 7 | copy, extend |
 
 ## Tier 1 — Truly universal files
 
@@ -51,5 +51,5 @@ by which it gets there. Generated from [`baseline.yaml`](baseline.yaml) — do n
 | `eslint.config.js` | extend | `pkg:eslint-config` | no | javascript, typescript | Thin local config extending the published, independently-versioned shared package. Package lives in its own repo (NOT hosted here). npm SCOPE intentionally unset — pinned at first publish. |
 | `.prettierrc.json` | extend | `pkg:prettier-config` | no | javascript, typescript | Thin pointer to the shared Prettier config package (external). npm SCOPE intentionally unset — pinned at first publish. |
 | `tsconfig.json` | extend | `pkg:tsconfig` | no | typescript | Extends the shared tsconfig base (e.g. <scope>/tsconfig/base). External package. npm SCOPE intentionally unset — pinned at first publish. |
-| `renovate.json` | extend | `github>Knowledgemonger-LLC/renovate-config` | yes | all | Thin file is template-synced (the pointer itself), but dependency RULES live in the external preset: {"extends": ["github>Knowledgemonger-LLC/renovate-config"]}. Renovate is preferred over Dependabot. |
-| `.pre-commit-config.yaml` | extend | `pkg:pre-commit (org-shared hook repos)` | no | all | Hook set differs by stack; references shared hook repos. Scaffolded thin and extended per stack. |
+| `renovate.json` | copy | `template/renovate.json.jinja` | yes | all | Thin pointer is COPIED and full-file synced; dependency RULES live in the external preset and are NOT inlined here. DEFERRED EXTERNAL PREREQUISITE: Renovate errors on target repos until Knowledgemonger-LLC/renovate-config exists with a base preset — same "reference is right, target must be created" class as the v1 tag. Preferred over Dependabot. |
+| `.pre-commit-config.yaml` | copy | `template/.pre-commit-config.yaml.jinja` | no | all | COPIED with marker-block drift: the managed region (trailing-whitespace, end-of-file-fixer, check-yaml, check-json, detect-secrets) is synced; stack-specific hooks are appended OUTSIDE the region. Uses # comment markers (valid YAML). |

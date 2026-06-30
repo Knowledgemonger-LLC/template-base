@@ -73,14 +73,24 @@ def render_source(source_of_truth: str, ctx: dict) -> str:
     return text
 
 
+def _is_marker(line: str, which: str) -> bool:
+    """True only when the line IS a marker, not merely prose mentioning the token.
+
+    Tolerates comment leaders/trailers so the same markers work in Markdown (<!-- -->),
+    YAML/CODEOWNERS (#), etc.: a marker line reduces exactly to `baseline:<which>`.
+    """
+    s = line.replace("<!--", "").replace("-->", "").strip().lstrip("#").strip()
+    return s == f"baseline:{which}"
+
+
 def marker_block(text: str):
     """Return the inclusive baseline:start..baseline:end region, or None if absent."""
     lines = text.splitlines()
     start = end = None
     for i, line in enumerate(lines):
-        if "baseline:start" in line and start is None:
+        if start is None and _is_marker(line, "start"):
             start = i
-        elif "baseline:end" in line:
+        elif _is_marker(line, "end"):
             end = i
     if start is None or end is None or end < start:
         return None
