@@ -1,0 +1,41 @@
+# Copier configuration for repo-baseline.
+#
+# `copier copy gh:Knowledgemonger-LLC/repo-baseline <dest>`  -> scaffold a NEW repo.
+# `copier update`                                            -> re-apply this template to an
+#   EXISTING repo (3-way merge via .copier-answers.yml). This is the propagation/merge lane
+#   that kills drift. check_drift.py is a SEPARATE reporting/CI gate — it never merges.
+#
+# Only the `template/` subdirectory is rendered into target repos. This repo's own meta-files
+# (baseline.yaml, scripts/, .github/, AGENTS.md, ...) are never copied out.
+
+_subdirectory: template
+_answers_file: .copier-answers.yml
+
+_envops:
+  keep_trailing_newline: true
+
+# ---- Questions (answers persisted to .copier-answers.yml in the target repo) ----
+
+org:
+  type: str
+  help: "GitHub organization slug (org/.github inheritance, Renovate preset, reusable workflows)."
+  default: "Knowledgemonger-LLC"
+
+npm_scope:
+  type: str
+  help: "npm scope for shared config packages (eslint/prettier/tsconfig), without the leading @."
+  default: "knowledgemonger"
+
+project_name:
+  type: str
+  help: "Human-readable project name."
+
+license_holder:
+  type: str
+  help: "Copyright holder for LICENSE."
+  default: "Knowledgemonger, LLC"
+
+license_year:
+  type: str
+  help: "Copyright year for LICENSE."
+  default: "2026"

@@ -1,0 +1,18 @@
+# Reusable release/publish workflow (Tier 4) — called by target repos via `uses:`.
+# STUB — real jobs land in a later phase. Callers MUST pin to @v1 or a SHA, never @main.
+#
+# Example caller (in a target repo, .github/workflows/release.yml):
+#   jobs:
+#     release:
+#       uses: Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-release.yml@v1
+name: reusable-release
+
+on:
+  workflow_call:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "reusable release/publish — not implemented yet"

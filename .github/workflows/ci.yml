@@ -1,0 +1,18 @@
+# CI for repo-baseline itself (NOT a reusable workflow).
+# STUB — full jobs land in a later phase. Intended checks:
+#   * validate baseline.yaml against scripts/baseline.schema.json
+#   * run `gen_baseline_md.py --check` to fail if BASELINE.md is stale
+#   * dry-run scripts/check_drift.py
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "validate baseline.yaml + BASELINE.md freshness (not implemented yet)"

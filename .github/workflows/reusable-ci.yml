@@ -1,0 +1,19 @@
+# Reusable CI workflow (Tier 4) — called by target repos via `uses:`.
+# STUB — real jobs land in a later phase. Hosted here so there is ONE source of truth;
+# callers MUST pin to @v1 or a SHA, never @main.
+#
+# Example caller (in a target repo, .github/workflows/ci.yml):
+#   jobs:
+#     ci:
+#       uses: Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-ci.yml@v1
+name: reusable-ci
+
+on:
+  workflow_call:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "reusable CI (lint/test/build) — not implemented yet"

@@ -1,0 +1,232 @@
+# baseline.yaml — SOURCE OF TRUTH for repo-baseline.
+#
+# Lists every element that should exist in EVERY repo at the org by default, what tier it
+# belongs to, and the mechanism by which it gets there. BASELINE.md (the human index) is
+# GENERATED from this file by scripts/gen_baseline_md.py — never hand-edit the index.
+# Validate this file against scripts/baseline.schema.json.
+#
+# Field reference (per element):
+#   path            Location of the file IN A TARGET REPO. null when there is no local file
+#                   (Tier 2 inherited elements).
+#   tier            1-4. See the tier model in README.md / AGENTS.md.
+#   mechanism       copy    -> content canonical here, copied & sync-enforced into the repo
+#                   extend  -> repo references an external canonical (package / preset /
+#                              reusable workflow); the local file is a thin pointer
+#                   inherit -> no local file; provided automatically by org/.github
+#                   generate-> produced by a generator in this repo (reserved; not yet used
+#                              by any target-repo element)
+#   source_of_truth Where the canonical version lives (template path, pkg: spec, github>
+#                   preset, org/.github:FILE, or a pinned reusable-workflow ref).
+#   applies_to      "all", or a list of stack archetypes (e.g. [typescript]).
+#   required        Whether every applicable repo MUST have this element.
+#   notes           Drift rule / caveats / cross-references.
+
+version: 1
+org: Knowledgemonger-LLC
+
+elements:
+  # ───────────────────────── Tier 1 — Truly universal files (copy) ─────────────────────────
+  - path: .editorconfig
+    tier: 1
+    mechanism: copy
+    source_of_truth: template/.editorconfig
+    applies_to: all
+    required: true
+    notes: >-
+      Universal editor settings. Full-file drift enforcement: target copy must match the
+      rendered template exactly.
+
+  - path: .gitattributes
+    tier: 1
+    mechanism: copy
+    source_of_truth: template/.gitattributes
+    applies_to: all
+    required: true
+    notes: >-
+      Line-ending and diff/merge attributes. Full-file drift enforcement.
+
+  - path: .gitignore
+    tier: 1
+    mechanism: copy
+    source_of_truth: template/.gitignore
+    applies_to: all
+    required: true
+    notes: >-
+      Canonical base ignores. Full-file enforcement on the base content. Stack-specific
+      ignores should be minimal and are expected to live in tool configs or below the base
+      (see open question on gitignore appends).
+
+  - path: LICENSE
+    tier: 1
+    mechanism: copy
+    source_of_truth: template/LICENSE
+    applies_to: all
+    required: true
+    notes: >-
+      Templated via Copier (license_year, license_holder). Full-file drift enforcement on
+      the RENDERED output.
+
+  # ─────────────────── Tier 2 — Governance / community-health (inherit) ────────────────────
+  # No local files. Provided automatically by the org .github repo. Rendered in BASELINE.md
+  # with path: null and a "No action in target repo" note.
+  - path: null
+    tier: 2
+    mechanism: inherit
+    source_of_truth: Knowledgemonger-LLC/.github:CONTRIBUTING.md
+    applies_to: all
+    required: true
+    notes: "No action in target repo — inherited from Knowledgemonger-LLC/.github."
+
+  - path: null
+    tier: 2
+    mechanism: inherit
+    source_of_truth: Knowledgemonger-LLC/.github:SECURITY.md
+    applies_to: all
+    required: true
+    notes: "No action in target repo — inherited from Knowledgemonger-LLC/.github."
+
+  - path: null
+    tier: 2
+    mechanism: inherit
+    source_of_truth: Knowledgemonger-LLC/.github:CODE_OF_CONDUCT.md
+    applies_to: all
+    required: true
+    notes: "No action in target repo — inherited from Knowledgemonger-LLC/.github."
+
+  - path: null
+    tier: 2
+    mechanism: inherit
+    source_of_truth: Knowledgemonger-LLC/.github:CODEOWNERS
+    applies_to: all
+    required: true
+    notes: >-
+      No local file expected per the tier model. CAVEAT: GitHub does NOT auto-inherit
+      CODEOWNERS from org/.github the way it inherits community-health files; org-default
+      CODEOWNERS support is limited. Flagged — see open question.
+
+  - path: null
+    tier: 2
+    mechanism: inherit
+    source_of_truth: Knowledgemonger-LLC/.github:.github/ISSUE_TEMPLATE/
+    applies_to: all
+    required: true
+    notes: "No action in target repo — issue templates inherited from Knowledgemonger-LLC/.github."
+
+  - path: null
+    tier: 2
+    mechanism: inherit
+    source_of_truth: Knowledgemonger-LLC/.github:.github/PULL_REQUEST_TEMPLATE.md
+    applies_to: all
+    required: true
+    notes: "No action in target repo — PR template inherited from Knowledgemonger-LLC/.github."
+
+  # ───────────────────────── Tier 3 — Agentic context files (copy) ─────────────────────────
+  - path: AGENTS.md
+    tier: 3
+    mechanism: copy
+    source_of_truth: template/AGENTS.md
+    applies_to: all
+    required: true
+    notes: >-
+      Canonical, cross-tool agent context. Marker-block sync: baseline content lives between
+      <!-- baseline:start --> and <!-- baseline:end -->; repo-specific content is allowed
+      outside the block and is preserved.
+
+  - path: CLAUDE.md
+    tier: 3
+    mechanism: copy
+    source_of_truth: template/CLAUDE.md
+    applies_to: all
+    required: true
+    notes: >-
+      Thin Claude-specific pointer to AGENTS.md. Marker-block sync
+      (<!-- baseline:start --> / <!-- baseline:end -->).
+
+  - path: .claude/settings.json
+    tier: 3
+    mechanism: copy
+    source_of_truth: template/.claude/settings.json
+    applies_to: all
+    required: true
+    notes: >-
+      Permission model. JSON — NO markers. Managed-keys-subset rule: baseline keys
+      (permissions.deny, defaultMode) must be present and equal; the repo may add extra
+      allow/ask entries.
+
+  - path: .claude/commands/
+    tier: 3
+    mechanism: copy
+    source_of_truth: template/.claude/commands/
+    applies_to: all
+    required: false
+    notes: >-
+      Shared slash commands. Baseline commands are synced; repos may add local commands
+      alongside them.
+
+  # ──────────────── Tier 4 — Universal in KIND, specific in FORM (extend) ──────────────────
+  - path: .github/workflows/ci.yml
+    tier: 4
+    mechanism: extend
+    source_of_truth: Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-ci.yml@v1
+    applies_to: all
+    required: true
+    notes: >-
+      Thin caller that `uses:` this repo's reusable CI workflow (workflow_call). MUST pin to
+      @v1 or a commit SHA, never @main. Logic lives in the reusable workflow hosted here.
+
+  - path: .github/workflows/release.yml
+    tier: 4
+    mechanism: extend
+    source_of_truth: Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-release.yml@v1
+    applies_to: all
+    required: false
+    notes: >-
+      Thin caller for the shared release/publish reusable workflow. Pin to @v1 or a SHA.
+
+  - path: eslint.config.js
+    tier: 4
+    mechanism: extend
+    source_of_truth: pkg:@knowledgemonger/eslint-config
+    applies_to: [javascript, typescript]
+    required: false
+    notes: >-
+      Thin local config extending the published, independently-versioned shared package.
+      Package lives in its own repo (NOT hosted here).
+
+  - path: .prettierrc.json
+    tier: 4
+    mechanism: extend
+    source_of_truth: pkg:@knowledgemonger/prettier-config
+    applies_to: [javascript, typescript]
+    required: false
+    notes: "Thin pointer to the shared Prettier config package (external)."
+
+  - path: tsconfig.json
+    tier: 4
+    mechanism: extend
+    source_of_truth: pkg:@knowledgemonger/tsconfig
+    applies_to: [typescript]
+    required: false
+    notes: >-
+      Extends @knowledgemonger/tsconfig/base. The shared tsconfig base is an external package.
+
+  - path: renovate.json
+    tier: 4
+    mechanism: extend
+    source_of_truth: github>Knowledgemonger-LLC/renovate-config
+    applies_to: all
+    required: true
+    notes: >-
+      Thin file is template-synced (the pointer itself), but dependency RULES live in the
+      external preset: {"extends": ["github>Knowledgemonger-LLC/renovate-config"]}.
+      Renovate is preferred over Dependabot.
+
+  - path: .pre-commit-config.yaml
+    tier: 4
+    mechanism: extend
+    source_of_truth: pkg:pre-commit (org-shared hook repos)
+    applies_to: all
+    required: false
+    notes: >-
+      Hook set differs by stack; references shared hook repos. Scaffolded thin and extended
+      per stack.
