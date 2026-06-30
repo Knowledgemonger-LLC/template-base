@@ -1,0 +1,44 @@
+# Git attributes — line-ending normalization + binary handling.
+# Managed by repo-baseline (Tier 1). Full-file drift enforcement — do not edit locally.
+
+# Normalize all text to LF in the repository; check out native on the working tree.
+* text=auto eol=lf
+
+# Shell scripts must stay LF even when checked out on Windows.
+*.sh    text eol=lf
+*.bash  text eol=lf
+
+# Windows scripts must stay CRLF.
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+
+# Treat these as binary: never normalize line endings, never diff as text.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.webp  binary
+*.pdf   binary
+*.zip   binary
+*.gz    binary
+*.tar   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.mp4   binary
+*.mov   binary
+*.wasm  binary
+
+# Linguist hints — exclude generated/vendored code from language stats and collapse in diffs.
+# Adjust per repo; these are common examples.
+*.min.js          linguist-generated=true
+*.min.css         linguist-generated=true
+package-lock.json linguist-generated=true
+pnpm-lock.yaml    linguist-generated=true
+yarn.lock         linguist-generated=true
+dist/**           linguist-generated=true
+vendor/**         linguist-vendored=true
+third_party/**    linguist-vendored=true

@@ -14,28 +14,63 @@ _answers_file: .copier-answers.yml
 _envops:
   keep_trailing_newline: true
 
-# ---- Questions (answers persisted to .copier-answers.yml in the target repo) ----
-
+# ---- Identity ----
+# A single `org` drives every GitHub slot (uses:, renovate github> preset, org/.github,
+# repo URLs, CODEOWNERS team refs) AND all human-facing text (titles, display names).
 org:
   type: str
-  help: "GitHub organization slug (org/.github inheritance, Renovate preset, reusable workflows)."
+  help: "GitHub organization (login + display). Used for every github slot and human-facing text."
   default: "Knowledgemonger-LLC"
 
-npm_scope:
-  type: str
-  help: "npm scope for shared config packages (eslint/prettier/tsconfig), without the leading @."
-  default: "knowledgemonger"
-
-project_name:
-  type: str
-  help: "Human-readable project name."
-
+# Legal entity for LICENSE — deliberately NOT the github login (plural, with a space).
 license_holder:
   type: str
-  help: "Copyright holder for LICENSE."
-  default: "Knowledgemonger, LLC"
+  help: "Legal copyright holder for LICENSE (e.g. \"Knowledgemongers LLC\")."
+  default: "Knowledgemongers LLC"
 
 license_year:
   type: str
   help: "Copyright year for LICENSE."
   default: "2026"
+
+# Default code owner — a TEAM, not a personal handle. Used in agent boundaries / CODEOWNERS refs.
+default_owner:
+  type: str
+  help: "Default owning team (org/team form)."
+  default: "@Knowledgemonger-LLC/maintainers"
+
+# ---- Project ----
+project_name:
+  type: str
+  help: "Human-readable project name."
+
+# ---- Archetype blanks (filled per stack; seed the Tier 3 files) ----
+stack:
+  type: str
+  help: "One-line description of the stack (language, framework, runtime)."
+  default: "TODO: describe the stack (language, framework, runtime)."
+
+pkg_manager:
+  type: str
+  help: "Primary package manager (drives the safe-command allowlist in .claude/settings.json)."
+  default: "npm"
+
+build_command:
+  type: str
+  help: "Shell command to build (leave the TODO if not applicable)."
+  default: "# TODO: set build command"
+
+test_command:
+  type: str
+  help: "Shell command to run tests."
+  default: "# TODO: set test command"
+
+run_command:
+  type: str
+  help: "Shell command to run the app locally."
+  default: "# TODO: set run command"
+
+lint_command:
+  type: str
+  help: "Shell command to lint."
+  default: "# TODO: set lint command"

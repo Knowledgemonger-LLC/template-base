@@ -1,0 +1,22 @@
+# CLAUDE.md — {{ project_name }}
+
+<!-- baseline:start -->
+<!-- Managed by repo-baseline (Tier 3). Content INSIDE this block is synced across all
+     {{ org }} repos via `copier update`; edit OUTSIDE this block. -->
+
+**[AGENTS.md](AGENTS.md) is the source of truth — read it first.** This file holds only
+Claude-specific notes and must not duplicate AGENTS.md.
+
+## Permissions
+Permission rules live in [.claude/settings.json](.claude/settings.json). Baseline policy:
+`git push` prompts (ask); `sudo`, `rm -rf`, reads of `.env*`, and reads of `~/.ssh/**` are
+denied. Do not weaken these — they are drift-managed.
+<!-- baseline:end -->
+
+## MCP servers
+<!-- List repo-specific MCP servers and how to authenticate them, or "none". -->
+none
+
+## Subdirectory overrides
+<!-- Note any nested AGENTS.md / CLAUDE.md that override this one for a subtree. -->
+none

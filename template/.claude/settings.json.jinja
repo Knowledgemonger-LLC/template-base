@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash({{ pkg_manager }} install:*)",
+      "Bash({{ pkg_manager }} ci:*)",
+      "Bash({{ pkg_manager }} run build:*)",
+      "Bash({{ pkg_manager }} run test:*)",
+      "Bash({{ pkg_manager }} run lint:*)",
+      "Bash({{ pkg_manager }} test:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)"
+    ],
+    "deny": [
+      "Bash(sudo:*)",
+      "Bash(rm -rf:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(~/.ssh/**)"
+    ]
+  }
+}

@@ -48,7 +48,7 @@ elements:
   - path: .gitignore
     tier: 1
     mechanism: copy
-    source_of_truth: template/.gitignore
+    source_of_truth: template/.gitignore.jinja
     applies_to: all
     required: true
     notes: >-
@@ -59,7 +59,7 @@ elements:
   - path: LICENSE
     tier: 1
     mechanism: copy
-    source_of_truth: template/LICENSE
+    source_of_truth: template/LICENSE.jinja
     applies_to: all
     required: true
     notes: >-
@@ -124,7 +124,7 @@ elements:
   - path: AGENTS.md
     tier: 3
     mechanism: copy
-    source_of_truth: template/AGENTS.md
+    source_of_truth: template/AGENTS.md.jinja
     applies_to: all
     required: true
     notes: >-
@@ -135,7 +135,7 @@ elements:
   - path: CLAUDE.md
     tier: 3
     mechanism: copy
-    source_of_truth: template/CLAUDE.md
+    source_of_truth: template/CLAUDE.md.jinja
     applies_to: all
     required: true
     notes: >-
@@ -145,7 +145,7 @@ elements:
   - path: .claude/settings.json
     tier: 3
     mechanism: copy
-    source_of_truth: template/.claude/settings.json
+    source_of_truth: template/.claude/settings.json.jinja
     applies_to: all
     required: true
     notes: >-
@@ -186,29 +186,33 @@ elements:
   - path: eslint.config.js
     tier: 4
     mechanism: extend
-    source_of_truth: pkg:@knowledgemonger/eslint-config
+    source_of_truth: "pkg:eslint-config"
     applies_to: [javascript, typescript]
     required: false
     notes: >-
       Thin local config extending the published, independently-versioned shared package.
-      Package lives in its own repo (NOT hosted here).
+      Package lives in its own repo (NOT hosted here). npm SCOPE intentionally unset —
+      pinned at first publish.
 
   - path: .prettierrc.json
     tier: 4
     mechanism: extend
-    source_of_truth: pkg:@knowledgemonger/prettier-config
+    source_of_truth: "pkg:prettier-config"
     applies_to: [javascript, typescript]
     required: false
-    notes: "Thin pointer to the shared Prettier config package (external)."
+    notes: >-
+      Thin pointer to the shared Prettier config package (external). npm SCOPE intentionally
+      unset — pinned at first publish.
 
   - path: tsconfig.json
     tier: 4
     mechanism: extend
-    source_of_truth: pkg:@knowledgemonger/tsconfig
+    source_of_truth: "pkg:tsconfig"
     applies_to: [typescript]
     required: false
     notes: >-
-      Extends @knowledgemonger/tsconfig/base. The shared tsconfig base is an external package.
+      Extends the shared tsconfig base (e.g. <scope>/tsconfig/base). External package. npm
+      SCOPE intentionally unset — pinned at first publish.
 
   - path: renovate.json
     tier: 4
