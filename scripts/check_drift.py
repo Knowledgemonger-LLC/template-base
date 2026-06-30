@@ -90,6 +90,9 @@ def marker_block(text: str):
 def rule_for(element: dict):
     if element["mechanism"] != "copy":
         return None
+    # An explicit `drift` in the manifest wins over the derived rule.
+    if element.get("drift"):
+        return element["drift"]
     path = element["path"]
     if not path or path.endswith("/"):
         return None
@@ -138,8 +141,18 @@ def check(target: Path):
                 findings.append((path, rule, "MISSING required file"))
             continue
 
-        template_text = render_source(element["source_of_truth"], ctx)
         target_text = target_file.read_text()
+
+        if rule == "generate-once":
+            # Scaffolded at creation; a different license is a legitimate choice, not drift.
+            # Do not compare bodies — only verify the holder/year were stamped.
+            for var in ("license_holder", "license_year"):
+                val = str(ctx.get(var, "")).strip()
+                if val and val not in target_text:
+                    findings.append((path, rule, f"{var} {val!r} not stamped into file"))
+            continue
+
+        template_text = render_source(element["source_of_truth"], ctx)
 
         if rule == "full-file":
             if template_text != target_text:
@@ -158,10 +171,74 @@ def check(target: Path):
     return evaluated, findings
 
 
+def question_values(placeholder=True) -> dict:
+    """Every Copier question -> its default (or a placeholder for required-no-default vars)."""
+    cfg = _yaml(ROOT / "copier.yml")
+    out = {}
+    for key, val in cfg.items():
+        if key.startswith("_") or not (isinstance(val, dict) and "type" in val):
+            continue
+        if "default" in val:
+            out[key] = val["default"]
+        elif placeholder:
+            out[key] = f"example-{key}"
+    return out
+
+
+def render_tree(dest: Path, ctx: dict) -> None:
+    """Render the whole template/ tree into dest (Copier-style: strip .jinja)."""
+    import os
+
+    tdir = ROOT / "template"
+    for root, _, files in os.walk(tdir):
+        for fn in files:
+            src = Path(root) / fn
+            rel = str(src.relative_to(tdir))
+            name = rel[:-6] if rel.endswith(".jinja") else rel
+            out = dest / name
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(render_source(str(src.relative_to(ROOT)), ctx))
+
+
+def selftest() -> int:
+    """Render template/ with Copier defaults and assert the result has no drift."""
+    import tempfile
+
+    import yaml
+
+    ctx = question_values()
+    with tempfile.TemporaryDirectory() as tmp:
+        dest = Path(tmp)
+        render_tree(dest, ctx)
+        (dest / ".copier-answers.yml").write_text(
+            "# Changes here will be overwritten by Copier\n" + yaml.safe_dump(ctx, sort_keys=False)
+        )
+        evaluated, findings = check(dest)
+    print("Self-test: rendered template/ with Copier defaults")
+    print(f"  rules evaluated: {evaluated}")
+    if not findings:
+        print("  result: OK — template renders to a baseline-conformant repo")
+        return 0
+    print(f"  result: FAIL — {len(findings)} issue(s)")
+    for path, rule, msg in findings:
+        print(f"    [{rule:12}] {path}: {msg}")
+    return 1
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Report baseline drift for a target repo (no merge).")
-    ap.add_argument("target", help="Path to the target repo working tree.")
+    ap.add_argument("target", nargs="?", help="Path to the target repo working tree.")
+    ap.add_argument(
+        "--selftest",
+        action="store_true",
+        help="Render template/ with Copier defaults and assert no drift (for CI).",
+    )
     args = ap.parse_args(argv)
+
+    if args.selftest:
+        return selftest()
+    if not args.target:
+        ap.error("target is required (or use --selftest)")
 
     target = Path(args.target).resolve()
     if not target.is_dir():

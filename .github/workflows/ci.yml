@@ -1,8 +1,7 @@
 # CI for repo-baseline itself (NOT a reusable workflow).
-# STUB — full jobs land in a later phase. Intended checks:
-#   * validate baseline.yaml against scripts/baseline.schema.json
-#   * run `gen_baseline_md.py --check` to fail if BASELINE.md is stale
-#   * dry-run scripts/check_drift.py
+# Gates the two source-of-truth invariants:
+#   1. BASELINE.md is regenerated from baseline.yaml (and baseline.yaml is schema-valid).
+#   2. template/ renders to a baseline-conformant repo (drift checker self-test).
 name: ci
 
 on:
@@ -10,9 +9,25 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
-  validate:
+  baseline-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "validate baseline.yaml + BASELINE.md freshness (not implemented yet)"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install tooling
+        run: pip install pyyaml jsonschema jinja2
+
+      - name: Manifest valid + BASELINE.md current
+        run: python scripts/gen_baseline_md.py --check
+
+      - name: Drift checker self-test (template renders clean)
+        run: python scripts/check_drift.py --selftest

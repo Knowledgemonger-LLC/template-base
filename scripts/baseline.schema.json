@@ -64,6 +64,11 @@
           "type": "boolean",
           "description": "Whether every applicable repo MUST have this element."
         },
+        "drift": {
+          "type": "string",
+          "enum": ["full-file", "marker-block", "managed-keys", "generate-once"],
+          "description": "Optional explicit drift rule. When omitted, check_drift derives it from tier/path. 'generate-once' = scaffolded at creation, not content-enforced."
+        },
         "notes": {
           "type": "string",
           "description": "Drift rule, caveats, or cross-references."

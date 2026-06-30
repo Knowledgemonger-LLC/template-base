@@ -62,12 +62,17 @@ elements:
   - path: LICENSE
     tier: 1
     mechanism: copy
+    drift: generate-once
     source_of_truth: template/LICENSE.jinja
     applies_to: all
     required: true
     notes: >-
-      Templated via Copier (license_year, license_holder). Full-file drift enforcement on
-      the RENDERED output.
+      Per-repo CHOICE, not a synced universal — the body is selected at creation
+      (proprietary [default] | MIT | Apache-2.0) with {{ license_holder }} / {{ license_year }}
+      templated. drift=generate-once: scaffolded once, NOT full-file enforced — a different
+      license is a legitimate choice (proprietary product vs. deliberately open-sourced), not
+      drift. check_drift only verifies presence and that holder/year are stamped. Default
+      proprietary so open-sourcing is an explicit opt-in.
 
   # ─────────────────── Tier 2 — Governance / community-health (inherit) ────────────────────
   # No local files. Provided automatically by the org .github repo. Rendered in BASELINE.md

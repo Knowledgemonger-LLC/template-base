@@ -33,6 +33,17 @@ license_year:
   help: "Copyright year for LICENSE."
   default: "2026"
 
+# Per-repo choice — NOT a synced universal. Default proprietary so open-sourcing is always
+# an explicit opt-in. LICENSE.jinja renders the body matching this choice.
+license:
+  type: str
+  help: "License for this repo."
+  default: proprietary
+  choices:
+    - proprietary
+    - MIT
+    - Apache-2.0
+
 # Default code owner — a TEAM, not a personal handle. Used in agent boundaries / CODEOWNERS refs.
 default_owner:
   type: str

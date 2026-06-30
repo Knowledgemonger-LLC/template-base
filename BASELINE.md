@@ -20,7 +20,7 @@ by which it gets there. Generated from [`baseline.yaml`](baseline.yaml) — do n
 | `.editorconfig` | copy | `template/.editorconfig` | yes | all | Universal editor settings. Full-file drift enforcement: target copy must match the rendered template exactly. |
 | `.gitattributes` | copy | `template/.gitattributes` | yes | all | Line-ending and diff/merge attributes. Full-file drift enforcement. |
 | `.gitignore` | copy | `template/.gitignore.jinja` | yes | all | Canonical base ignores. Full-file enforcement on the base content. Stack-specific ignores should be minimal and are expected to live in tool configs or below the base (see open question on gitignore appends). |
-| `LICENSE` | copy | `template/LICENSE.jinja` | yes | all | Templated via Copier (license_year, license_holder). Full-file drift enforcement on the RENDERED output. |
+| `LICENSE` | copy | `template/LICENSE.jinja` | yes | all | Per-repo CHOICE, not a synced universal — the body is selected at creation (proprietary [default] \| MIT \| Apache-2.0) with {{ license_holder }} / {{ license_year }} templated. drift=generate-once: scaffolded once, NOT full-file enforced — a different license is a legitimate choice (proprietary product vs. deliberately open-sourced), not drift. check_drift only verifies presence and that holder/year are stamped. Default proprietary so open-sourcing is an explicit opt-in. |
 
 ## Tier 2 — Governance / community-health
 

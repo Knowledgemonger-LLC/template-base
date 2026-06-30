@@ -1,18 +1,63 @@
-# Reusable release/publish workflow (Tier 4) — called by target repos via `uses:`.
-# STUB — real jobs land in a later phase. Callers MUST pin to @v1 or a SHA, never @main.
+# Reusable release/publish workflow (Tier 4) — hosted here as the single source of truth.
+# Target repos call it from a thin .github/workflows/release.yml, pinned to @v1 (or a SHA),
+# with `secrets: inherit` (or an explicit NPM_TOKEN). See examples/caller-release.yml.
 #
-# Example caller (in a target repo, .github/workflows/release.yml):
-#   jobs:
-#     release:
-#       uses: Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-release.yml@v1
+# The repo must define a `release` script (e.g. changesets, semantic-release, or `npm publish`).
 name: reusable-release
 
 on:
   workflow_call:
+    inputs:
+      node-version:
+        description: "Node.js version."
+        type: string
+        default: "20"
+      package-manager:
+        description: "Package manager: pnpm | npm | yarn."
+        type: string
+        default: "pnpm"
+    secrets:
+      NPM_TOKEN:
+        description: "npm registry auth token (optional if the release script does not publish)."
+        required: false
+
+permissions:
+  contents: write    # create tags / GitHub releases
+  id-token: write    # npm provenance / OIDC
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "reusable release/publish — not implemented yet"
+        with:
+          fetch-depth: 0    # full history for changelog/version tools
+
+      - name: Set up pnpm
+        if: inputs.package-manager == 'pnpm'
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: ${{ inputs.package-manager }}
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install (frozen lockfile)
+        shell: bash
+        run: |
+          if [ "${{ inputs.package-manager }}" = "npm" ]; then
+            npm ci
+          else
+            ${{ inputs.package-manager }} install --frozen-lockfile
+          fi
+
+      - name: Build
+        run: ${{ inputs.package-manager }} run build
+
+      - name: Release
+        run: ${{ inputs.package-manager }} run release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

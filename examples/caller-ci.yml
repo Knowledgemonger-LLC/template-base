@@ -1,0 +1,18 @@
+# EXAMPLE caller — copy into a target repo as .github/workflows/ci.yml.
+# This is the "extend, don't copy" pattern: a few lines that reference the reusable
+# workflow hosted in repo-baseline. Pin to @v1 (or a commit SHA) — never @main.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    uses: Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-ci.yml@v1
+    with:
+      node-version: "20"
+      package-manager: pnpm
+      # working-directory: "."
+      # run-build: true
