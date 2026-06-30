@@ -1,0 +1,21 @@
+# CODEOWNERS — managed by repo-baseline (Tier 2, copy).
+# Docs: https://docs.github.com/articles/about-code-owners
+#
+# The block between `baseline:start` and `baseline:end` is drift-managed: the default
+# org-wide owner is synced across all {{ org }} repos via `copier update`. Add repo-specific
+# path rules OUTSIDE the block (below it), where they are preserved.
+#
+# Requirements:
+#   * The owning team must exist in the org WITH WRITE ACCESS to this repo, or GitHub silently
+#     ignores the entry.
+#   * Keep "Require review from Code Owners" branch protection OFF while the repo is solo — a
+#     single maintainer cannot satisfy their own required code-owner review. Turn it on once
+#     there is a second reviewer.
+
+# baseline:start
+* {{ default_owner }}
+# baseline:end
+
+# Repo-specific overrides below (safe to edit; not managed by the baseline). Examples:
+# /docs/    @{{ org }}/docs
+# /infra/   @{{ org }}/platform

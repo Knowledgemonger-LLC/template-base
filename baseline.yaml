@@ -22,6 +22,9 @@
 #   notes           Drift rule / caveats / cross-references.
 
 version: 1
+
+# org is FINAL: Knowledgemonger-LLC — the literal GitHub login. The session email domain is
+# NOT authoritative for the org; this is settled, do not re-raise.
 org: Knowledgemonger-LLC
 
 elements:
@@ -75,7 +78,9 @@ elements:
     source_of_truth: Knowledgemonger-LLC/.github:CONTRIBUTING.md
     applies_to: all
     required: true
-    notes: "No action in target repo — inherited from Knowledgemonger-LLC/.github."
+    notes: >-
+      No action in target repo — inherited from Knowledgemonger-LLC/.github (which must be a
+      PUBLIC repo for community-health inheritance — docs-confirmed).
 
   - path: null
     tier: 2
@@ -83,7 +88,9 @@ elements:
     source_of_truth: Knowledgemonger-LLC/.github:SECURITY.md
     applies_to: all
     required: true
-    notes: "No action in target repo — inherited from Knowledgemonger-LLC/.github."
+    notes: >-
+      No action in target repo — inherited from Knowledgemonger-LLC/.github (which must be a
+      PUBLIC repo for community-health inheritance — docs-confirmed).
 
   - path: null
     tier: 2
@@ -91,18 +98,23 @@ elements:
     source_of_truth: Knowledgemonger-LLC/.github:CODE_OF_CONDUCT.md
     applies_to: all
     required: true
-    notes: "No action in target repo — inherited from Knowledgemonger-LLC/.github."
+    notes: >-
+      No action in target repo — inherited from Knowledgemonger-LLC/.github (which must be a
+      PUBLIC repo for community-health inheritance — docs-confirmed).
 
-  - path: null
+  - path: .github/CODEOWNERS
     tier: 2
-    mechanism: inherit
-    source_of_truth: Knowledgemonger-LLC/.github:CODEOWNERS
+    mechanism: copy
+    source_of_truth: template/.github/CODEOWNERS.jinja
     applies_to: all
     required: true
     notes: >-
-      No local file expected per the tier model. CAVEAT: GitHub does NOT auto-inherit
-      CODEOWNERS from org/.github the way it inherits community-health files; org-default
-      CODEOWNERS support is limited. Flagged — see open question.
+      FINAL DECISION: COPIED (not inherited) because GitHub does NOT auto-inherit CODEOWNERS
+      from org/.github the way it does community-health files. Marker-block drift
+      (baseline:start / baseline:end, using # comments valid in CODEOWNERS) with default
+      `* {{ default_owner }}`; repo-specific path rules are appended OUTSIDE the block. The
+      maintainers team must exist with WRITE access; keep code-owner-required review OFF
+      while the repo is solo.
 
   - path: null
     tier: 2
@@ -110,7 +122,9 @@ elements:
     source_of_truth: Knowledgemonger-LLC/.github:.github/ISSUE_TEMPLATE/
     applies_to: all
     required: true
-    notes: "No action in target repo — issue templates inherited from Knowledgemonger-LLC/.github."
+    notes: >-
+      No action in target repo — issue templates inherited from Knowledgemonger-LLC/.github
+      (which must be a PUBLIC repo for inheritance — docs-confirmed).
 
   - path: null
     tier: 2
@@ -118,7 +132,9 @@ elements:
     source_of_truth: Knowledgemonger-LLC/.github:.github/PULL_REQUEST_TEMPLATE.md
     applies_to: all
     required: true
-    notes: "No action in target repo — PR template inherited from Knowledgemonger-LLC/.github."
+    notes: >-
+      No action in target repo — PR template inherited from Knowledgemonger-LLC/.github
+      (which must be a PUBLIC repo for inheritance — docs-confirmed).
 
   # ───────────────────────── Tier 3 — Agentic context files (copy) ─────────────────────────
   - path: AGENTS.md
