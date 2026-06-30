@@ -238,15 +238,19 @@ elements:
   - path: renovate.json
     tier: 4
     mechanism: copy
-    drift: full-file
+    drift: managed-keys
     source_of_truth: template/renovate.json.jinja
     applies_to: all
     required: true
     notes: >-
-      Thin pointer is COPIED and full-file synced; dependency RULES live in the external
-      preset and are NOT inlined here. DEFERRED EXTERNAL PREREQUISITE: Renovate errors on
-      target repos until Knowledgemonger-LLC/renovate-config exists with a base preset — same
-      "reference is right, target must be created" class as the v1 tag. Preferred over Dependabot.
+      COPIED thin pointer. Marker-block-style drift, but JSON can't hold # markers, so it is
+      enforced as managed-keys (like settings.json): MANAGED = `$schema` and `extends` must
+      contain github>Knowledgemonger-LLC/renovate-config; repo-owned keys (packageRules,
+      schedule, …) are FREE alongside it. Full-file would forbid legitimate per-repo Renovate
+      customization. Rules themselves live in the external preset, NOT inlined here. DEFERRED
+      EXTERNAL PREREQUISITE: Renovate errors on target repos until
+      Knowledgemonger-LLC/renovate-config exists with a base preset — same "reference is right,
+      target must be created" class as the v1 tag. Preferred over Dependabot.
 
   - path: .pre-commit-config.yaml
     tier: 4

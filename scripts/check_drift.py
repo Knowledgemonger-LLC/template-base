@@ -113,22 +113,42 @@ def rule_for(element: dict):
     return "full-file"
 
 
-def check_managed_keys(template_text: str, target_text: str) -> list[str]:
+def check_managed_keys(path: str, template_text: str, target_text: str) -> list[str]:
+    """Subset rule: enforce only the managed keys; the repo may add other keys freely.
+
+    Dispatches by file because the managed keys differ:
+      * .claude/settings.json -> permissions.deny (set-equal) + permissions.defaultMode.
+      * renovate.json         -> $schema (equal) + extends must CONTAIN the managed preset(s).
+    """
     try:
-        tmpl = json.loads(template_text).get("permissions", {})
-        tgt = json.loads(target_text).get("permissions", {})
+        tmpl = json.loads(template_text)
+        tgt = json.loads(target_text)
     except json.JSONDecodeError as exc:
         return [f"invalid JSON: {exc}"]
     issues = []
-    if tgt.get("defaultMode") != tmpl.get("defaultMode"):
-        issues.append(
-            f"defaultMode must equal {tmpl.get('defaultMode')!r} (found {tgt.get('defaultMode')!r})"
-        )
-    if sorted(tgt.get("deny", [])) != sorted(tmpl.get("deny", [])):
-        issues.append(
-            f"deny must equal baseline set {sorted(tmpl.get('deny', []))} "
-            f"(found {sorted(tgt.get('deny', []))})"
-        )
+
+    if path.endswith("settings.json"):
+        tp = tmpl.get("permissions", {})
+        gp = tgt.get("permissions", {})
+        if gp.get("defaultMode") != tp.get("defaultMode"):
+            issues.append(
+                f"defaultMode must equal {tp.get('defaultMode')!r} (found {gp.get('defaultMode')!r})"
+            )
+        if sorted(gp.get("deny", [])) != sorted(tp.get("deny", [])):
+            issues.append(
+                f"deny must equal baseline set {sorted(tp.get('deny', []))} "
+                f"(found {sorted(gp.get('deny', []))})"
+            )
+    elif path == "renovate.json":
+        if tmpl.get("$schema") and tgt.get("$schema") != tmpl.get("$schema"):
+            issues.append(f"$schema must equal {tmpl.get('$schema')!r} (found {tgt.get('$schema')!r})")
+        have = tgt.get("extends", [])
+        for preset in tmpl.get("extends", []):
+            if preset not in have:
+                issues.append(f"extends must contain {preset!r} (found {have})")
+    else:
+        issues.append(f"no managed-keys rule defined for {path}")
+
     return issues
 
 
@@ -175,7 +195,7 @@ def check(target: Path):
             elif tmpl_block != tgt_block:
                 findings.append((path, rule, "managed marker block differs from baseline"))
         elif rule == "managed-keys":
-            for msg in check_managed_keys(template_text, target_text):
+            for msg in check_managed_keys(path, template_text, target_text):
                 findings.append((path, rule, msg))
 
     return evaluated, findings

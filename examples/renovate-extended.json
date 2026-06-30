@@ -1,0 +1,24 @@
+{
+  // EXAMPLE — a target repo's renovate.json after scaffolding + local edits.
+  // NOT a caller: scaffolded in by Copier and edited IN PLACE. Renovate accepts // comments.
+  // Doubles as the spec for the managed-keys drift rule on renovate.json.
+  //
+  // ── MANAGED (synced; check_drift enforces these) ──
+  //   * "$schema" must equal the baseline value.
+  //   * "extends" must CONTAIN "github>Knowledgemonger-LLC/renovate-config".
+  //   Re-pointing/removing the preset, or changing $schema, is flagged as drift.
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>Knowledgemonger-LLC/renovate-config"],
+
+  // ── EDITABLE (repo-owned; allowed ALONGSIDE the managed keys, never flagged) ──
+  // You may add to "extends" too (e.g. a stack preset) as long as the managed preset stays.
+  "packageRules": [
+    {
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "non-major npm deps",
+      "automerge": true
+    }
+  ],
+  "schedule": ["after 9am and before 5pm on monday"]
+}
