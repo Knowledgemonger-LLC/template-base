@@ -80,6 +80,14 @@ elements:
   # ─────────────────── Tier 2 — Governance / community-health (inherit) ────────────────────
   # No local files. Provided automatically by the org .github repo. Rendered in BASELINE.md
   # with path: null and a "No action in target repo" note.
+  #
+  # DECISION (final): Knowledgemonger-LLC/.github is PUBLIC, and all five file types inherit
+  # from it. None of these files are sensitive (SECURITY/CONTRIBUTING/CODE_OF_CONDUCT are meant
+  # for outsiders; issue/PR templates are boilerplate); public is REQUIRED for issue/PR-template
+  # inheritance and free for the rest, so the "keep governance internal" branch is dropped.
+  # ESCAPE HATCH (not built): if a specific governance file must ever be non-public, move THAT
+  # one file from Tier-2 inherit to a Tier-1/3 COPY element and keep only the templates in the
+  # public .github.
   - path: null
     tier: 2
     mechanism: inherit
@@ -87,11 +95,11 @@ elements:
     applies_to: all
     required: true
     notes: >-
-      No action in target repo — inherited from Knowledgemonger-LLC/.github. Inheritance keys
-      on ACCOUNT OWNERSHIP, not consumer visibility: PRIVATE product repos DO inherit org
-      defaults; only the source .github repo's visibility is constrained. This file-type
-      inherits from a PUBLIC or INTERNAL .github (Enterprise Cloud). Setup default: PUBLIC
-      .github (governance files aren't secret). Docs-verified.
+      No action in target repo — inherited from Knowledgemonger-LLC/.github. DECISION (final):
+      that repo is PUBLIC. Inheritance keys on ACCOUNT OWNERSHIP, not consumer visibility, so
+      PRIVATE product repos DO inherit; only the source .github visibility matters. (This
+      file-type could also inherit from an INTERNAL .github, but PUBLIC is chosen — see the
+      Tier-2 escape-hatch note.) Docs-verified.
 
   - path: null
     tier: 2
@@ -100,11 +108,11 @@ elements:
     applies_to: all
     required: true
     notes: >-
-      No action in target repo — inherited from Knowledgemonger-LLC/.github. Inheritance keys
-      on ACCOUNT OWNERSHIP, not consumer visibility: PRIVATE product repos DO inherit org
-      defaults; only the source .github repo's visibility is constrained. This file-type
-      inherits from a PUBLIC or INTERNAL .github (Enterprise Cloud). Setup default: PUBLIC
-      .github (governance files aren't secret). Docs-verified.
+      No action in target repo — inherited from Knowledgemonger-LLC/.github. DECISION (final):
+      that repo is PUBLIC. Inheritance keys on ACCOUNT OWNERSHIP, not consumer visibility, so
+      PRIVATE product repos DO inherit; only the source .github visibility matters. (This
+      file-type could also inherit from an INTERNAL .github, but PUBLIC is chosen — see the
+      Tier-2 escape-hatch note.) Docs-verified.
 
   - path: null
     tier: 2
@@ -113,11 +121,11 @@ elements:
     applies_to: all
     required: true
     notes: >-
-      No action in target repo — inherited from Knowledgemonger-LLC/.github. Inheritance keys
-      on ACCOUNT OWNERSHIP, not consumer visibility: PRIVATE product repos DO inherit org
-      defaults; only the source .github repo's visibility is constrained. This file-type
-      inherits from a PUBLIC or INTERNAL .github (Enterprise Cloud). Setup default: PUBLIC
-      .github (governance files aren't secret). Docs-verified.
+      No action in target repo — inherited from Knowledgemonger-LLC/.github. DECISION (final):
+      that repo is PUBLIC. Inheritance keys on ACCOUNT OWNERSHIP, not consumer visibility, so
+      PRIVATE product repos DO inherit; only the source .github visibility matters. (This
+      file-type could also inherit from an INTERNAL .github, but PUBLIC is chosen — see the
+      Tier-2 escape-hatch note.) Docs-verified.
 
   - path: .github/CODEOWNERS
     tier: 2
@@ -141,12 +149,12 @@ elements:
     required: true
     notes: >-
       No action in target repo — issue templates inherited from Knowledgemonger-LLC/.github.
-      Inheritance keys on ACCOUNT OWNERSHIP (PRIVATE repos DO inherit); only the source .github
-      visibility is constrained. ISSUE_TEMPLATE inherits ONLY from a PUBLIC .github — INTERNAL
-      is insufficient for this and PULL_REQUEST_TEMPLATE. ALL-OR-NOTHING: any local
-      .github/ISSUE_TEMPLATE file makes the repo use NONE of the org defaults for that folder.
-      Setup default: PUBLIC .github; if .github must stay non-public, ship issue/PR templates
-      per-repo instead. Docs-verified.
+      DECISION (final): that repo is PUBLIC — REQUIRED here, since ISSUE_TEMPLATE and
+      PULL_REQUEST_TEMPLATE inherit ONLY from a public .github (internal is insufficient).
+      Inheritance keys on ACCOUNT OWNERSHIP (private repos DO inherit). ALL-OR-NOTHING: any
+      local .github/ISSUE_TEMPLATE file makes the repo use NONE of the org defaults for that
+      folder — the planned open-source repo will deliberately OVERRIDE with its own tailored
+      templates. Docs-verified.
 
   - path: null
     tier: 2
@@ -156,10 +164,9 @@ elements:
     required: true
     notes: >-
       No action in target repo — PR template inherited from Knowledgemonger-LLC/.github.
-      Inheritance keys on ACCOUNT OWNERSHIP (PRIVATE repos DO inherit); only the source .github
-      visibility is constrained. PULL_REQUEST_TEMPLATE inherits ONLY from a PUBLIC .github —
-      INTERNAL is insufficient. Setup default: PUBLIC .github; if .github must stay non-public,
-      ship the PR template per-repo instead. Docs-verified.
+      DECISION (final): that repo is PUBLIC — REQUIRED, since PULL_REQUEST_TEMPLATE inherits
+      ONLY from a public .github (internal insufficient). Inheritance keys on ACCOUNT OWNERSHIP
+      (private repos DO inherit). Docs-verified.
 
   # ───────────────────────── Tier 3 — Agentic context files (copy) ─────────────────────────
   - path: AGENTS.md
