@@ -3,18 +3,52 @@
 Single source of truth for everything that should exist in **every** repo at the org by
 default — defined once, propagated by tooling, never hand-copied or allowed to drift.
 
-> **Status:** skeleton (Phase 1). Template file contents and tooling are authored in later
-> phases. Start with [`baseline.yaml`](baseline.yaml) (machine-readable source of truth) and
+> **Status:** authored and smoke-tested end-to-end (`copier copy` verified; `gen_baseline_md.py
+> --check` and `check_drift.py --selftest` green). Not yet released — the `v1` tag and the two
+> external repos in [Prerequisites](#prerequisites-external-repos-that-must-exist) are still
+> pending. Start with [`baseline.yaml`](baseline.yaml) (machine-readable source of truth) and
 > [`BASELINE.md`](BASELINE.md) (generated human index).
+
+## How this fits together (three artifacts, don't confuse them)
+
+Three separate things deliver the baseline. They cooperate; none replaces another.
+
+| Artifact | What it is | When it runs | How it delivers | Owns |
+|---|---|---|---|---|
+| **repo-baseline** (this repo) | a Copier template | once, at repo creation (+ `copier update`), on your machine | **writes files into** the new repo | Tiers 1, 3, 4 (+ CODEOWNERS) |
+| **Knowledgemonger-LLC/.github** | a GitHub org-defaults *repository* (public) | continuously, at view-time, on GitHub's servers | **displays** fallback files; copies nothing | Tier 2 |
+| **archetype templates** (optional, e.g. `api-template`) | Copier templates that **compose** repo-baseline | once, at creation | write archetype-specific files **on top of** the baseline | archetype layer |
+
+A generated repo therefore gets: universal files *written in* by repo-baseline, governance docs
+*inherited* (displayed) from the `.github` repo, and — if created from an archetype template —
+its specialized scaffold layered on. `.github` does **not** replace repo-baseline; it delivers the
+one tier (2) that repo-baseline deliberately doesn't copy.
+
+> **Two different `.github`s:** the org **repository** `Knowledgemonger-LLC/.github` (Tier-2
+> inheritance source, public) is NOT the `.github/` **folder** inside this repo (which holds this
+> repo's own CI workflows). Owner-slot = repo; deeper path = folder.
+
+## Prerequisites (external repos that must exist)
+
+Generated repos depend on three "reference is correct, target must be created" items. Until each
+exists, the corresponding feature silently no-ops or errors:
+
+1. **`v1` tag on this repo** — callers pin `@v1`; see Releasing below. (Internal; you cut it.)
+2. **Public `Knowledgemonger-LLC/.github`** — Tier-2 inheritance source. Must be **public** (private
+   unsupported; issue/PR templates require public specifically). Without it, all Tier-2 inheritance
+   no-ops. Holds all five Tier-2 file types — but NOT CODEOWNERS (see below).
+3. **Public `Knowledgemonger-LLC/renovate-config`** — the preset the thin `renovate.json` extends.
+   Without it, Renovate errors in every generated repo.
 
 ## The four-tier model
 
 | Tier | What | Mechanism |
 |------|------|-----------|
 | 1 | Truly universal files (`.editorconfig`, `.gitattributes`, base `.gitignore`, `LICENSE`) | **copy** — template + drift sync |
-| 2 | Governance / community-health (`CONTRIBUTING`, `SECURITY`, `CODE_OF_CONDUCT`, `CODEOWNERS`, issue/PR templates) | **inherit** — org `.github` repo; no local copies |
+| 2 | Governance / community-health (`CONTRIBUTING`, `SECURITY`, `CODE_OF_CONDUCT`, issue/PR templates) | **inherit** — public org `.github` repo; no local copies |
+| 2* | `CODEOWNERS` — governance, but **cannot inherit** (GitHub reads it only from the repo itself) | **copy** — shipped by repo-baseline to `.github/CODEOWNERS` |
 | 3 | Agentic context (`AGENTS.md`, thin `CLAUDE.md`, `.claude/settings.json`, `.claude/commands/`) | **copy** — thin, reference shared rules |
-| 4 | Universal in kind, specific in form (CI/CD, lint/format, tsconfig, Renovate, pre-commit) | **extend** — shared packages + reusable workflows referenced in a few lines |
+| 4 | Universal in kind, specific in form (CI/CD, lint/format, tsconfig, Renovate, pre-commit) | **extend** — shared packages + reusable workflows referenced in a few lines. (Renovate & pre-commit ship a thin **copy** pointer that *extends* an external preset — synced via managed-keys / marker-block drift.) |
 
 ## How drift is killed
 
