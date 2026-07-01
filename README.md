@@ -1,4 +1,4 @@
-# repo-baseline
+# template-base
 
 Single source of truth for everything that should exist in **every** repo at the org by
 default — defined once, propagated by tooling, never hand-copied or allowed to drift.
@@ -15,18 +15,43 @@ Three separate things deliver the baseline. They cooperate; none replaces anothe
 
 | Artifact | What it is | When it runs | How it delivers | Owns |
 |---|---|---|---|---|
-| **repo-baseline** (this repo) | a Copier template | once, at repo creation (+ `copier update`), on your machine | **writes files into** the new repo | Tiers 1, 3, 4 (+ CODEOWNERS) |
+| **template-base** (this repo) | a Copier template | once, at repo creation (+ `copier update`), on your machine | **writes files into** the new repo | Tiers 1, 3, 4 (+ CODEOWNERS) |
 | **Knowledgemonger-LLC/.github** | a GitHub org-defaults *repository* (public) | continuously, at view-time, on GitHub's servers | **displays** fallback files; copies nothing | Tier 2 |
-| **archetype templates** (optional, e.g. `api-template`) | Copier templates that **compose** repo-baseline | once, at creation | write archetype-specific files **on top of** the baseline | archetype layer |
+| **archetype templates** (future, e.g. `template-api`, `template-web`, `template-sagemaker`) | Copier templates that **compose** template-base | once, at creation | write archetype-specific files **on top of** the baseline | archetype layer |
 
-A generated repo therefore gets: universal files *written in* by repo-baseline, governance docs
+A generated repo therefore gets: universal files *written in* by template-base, governance docs
 *inherited* (displayed) from the `.github` repo, and — if created from an archetype template —
-its specialized scaffold layered on. `.github` does **not** replace repo-baseline; it delivers the
-one tier (2) that repo-baseline deliberately doesn't copy.
+its specialized scaffold layered on. `.github` does **not** replace template-base; it delivers the
+one tier (2) that template-base deliberately doesn't copy.
 
 > **Two different `.github`s:** the org **repository** `Knowledgemonger-LLC/.github` (Tier-2
 > inheritance source, public) is NOT the `.github/` **folder** inside this repo (which holds this
 > repo's own CI workflows). Owner-slot = repo; deeper path = folder.
+
+### Composition: archetypes layer on top of the base
+
+Archetype templates do **not** fork or copy the base — they **compose** it via Copier template
+composition: scaffolding applies **template-base first**, then the archetype layers its own
+specialized files on top. The generated repo's `.copier-answers.yml` records **both** sources, so
+it can `copier update` from each **independently** — the universal layer keeps flowing from
+template-base, the archetype layer from its own template. The layers are **additive, not mutually
+exclusive**.
+
+Consequence: **never duplicate base files into an archetype template.** An archetype ships only
+what is unique to it; everything universal stays in template-base and arrives by composition.
+
+> **Current state:** template-base is the *only* template today; archetypes are the documented next
+> layer, not yet built. A small archetype-specific need can live inside template-base until it
+> accumulates enough unique files to **graduate** into its own `template-<name>` repo — moving a
+> concern out of the base is a deliberate step, not the default.
+
+### Naming convention: `template-<role>`
+
+- **`template-base`** — the universal foundation (this repo); `-base` marks the foundation.
+- **`template-<archetype>`** — specializations that compose the base: `template-api`,
+  `template-web`, `template-sagemaker`, …
+
+The shared `template-` prefix groups the whole scaffolding family together in the org repo listing.
 
 ## Prerequisites (external repos that must exist)
 
@@ -46,7 +71,7 @@ exists, the corresponding feature silently no-ops or errors:
 |------|------|-----------|
 | 1 | Truly universal files (`.editorconfig`, `.gitattributes`, base `.gitignore`, `LICENSE`) | **copy** — template + drift sync |
 | 2 | Governance / community-health (`CONTRIBUTING`, `SECURITY`, `CODE_OF_CONDUCT`, issue/PR templates) | **inherit** — public org `.github` repo; no local copies |
-| 2* | `CODEOWNERS` — governance, but **cannot inherit** (GitHub reads it only from the repo itself) | **copy** — shipped by repo-baseline to `.github/CODEOWNERS` |
+| 2* | `CODEOWNERS` — governance, but **cannot inherit** (GitHub reads it only from the repo itself) | **copy** — shipped by template-base to `.github/CODEOWNERS` |
 | 3 | Agentic context (`AGENTS.md`, thin `CLAUDE.md`, `.claude/settings.json`, `.claude/commands/`) | **copy** — thin, reference shared rules |
 | 4 | Universal in kind, specific in form (CI/CD, lint/format, tsconfig, Renovate, pre-commit) | **extend** — shared packages + reusable workflows referenced in a few lines. (Renovate & pre-commit ship a thin **copy** pointer that *extends* an external preset — synced via managed-keys / marker-block drift.) |
 

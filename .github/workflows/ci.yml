@@ -1,4 +1,4 @@
-# CI for repo-baseline itself (NOT a reusable workflow).
+# CI for template-base itself (NOT a reusable workflow).
 # Gates the two source-of-truth invariants:
 #   1. BASELINE.md is regenerated from baseline.yaml (and baseline.yaml is schema-valid).
 #   2. template/ renders to a baseline-conformant repo (drift checker self-test).

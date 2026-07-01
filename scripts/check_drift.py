@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Report drift between a target repo and the repo-baseline template.
+"""Report drift between a target repo and the template-base template.
 
 REPORTING / CI GATE ONLY — this tool never merges. Propagation and merge are
 `copier update`'s job (3-way merge via .copier-answers.yml). Keep the two lanes separate.

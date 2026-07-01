@@ -9,7 +9,7 @@ on:
 
 jobs:
   release:
-    uses: Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-release.yml@v1
+    uses: Knowledgemonger-LLC/template-base/.github/workflows/reusable-release.yml@v1
     with:
       package-manager: pnpm
     secrets: inherit

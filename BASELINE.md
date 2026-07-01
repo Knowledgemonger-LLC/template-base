@@ -46,8 +46,8 @@ by which it gets there. Generated from [`baseline.yaml`](baseline.yaml) — do n
 
 | Path | Mechanism | Source of truth | Required | Applies to | Notes |
 |------|-----------|-----------------|----------|------------|-------|
-| `.github/workflows/ci.yml` | extend | `Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-ci.yml@v1` | yes | all | Thin caller that `uses:` this repo's reusable CI workflow (workflow_call). MUST pin to @v1 or a commit SHA, never @main. Logic lives in the reusable workflow hosted here. |
-| `.github/workflows/release.yml` | extend | `Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-release.yml@v1` | no | all | Thin caller for the shared release/publish reusable workflow. Pin to @v1 or a SHA. |
+| `.github/workflows/ci.yml` | extend | `Knowledgemonger-LLC/template-base/.github/workflows/reusable-ci.yml@v1` | yes | all | Thin caller that `uses:` this repo's reusable CI workflow (workflow_call). MUST pin to @v1 or a commit SHA, never @main. Logic lives in the reusable workflow hosted here. |
+| `.github/workflows/release.yml` | extend | `Knowledgemonger-LLC/template-base/.github/workflows/reusable-release.yml@v1` | no | all | Thin caller for the shared release/publish reusable workflow. Pin to @v1 or a SHA. |
 | `eslint.config.js` | extend | `pkg:eslint-config` | no | javascript, typescript | Thin local config extending the published, independently-versioned shared package. Package lives in its own repo (NOT hosted here). npm SCOPE intentionally unset — pinned at first publish. |
 | `.prettierrc.json` | extend | `pkg:prettier-config` | no | javascript, typescript | Thin pointer to the shared Prettier config package (external). npm SCOPE intentionally unset — pinned at first publish. |
 | `tsconfig.json` | extend | `pkg:tsconfig` | no | typescript | Extends the shared tsconfig base (e.g. <scope>/tsconfig/base). External package. npm SCOPE intentionally unset — pinned at first publish. |

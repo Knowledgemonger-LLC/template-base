@@ -1,11 +1,11 @@
-# AGENTS.md — working ON repo-baseline
+# AGENTS.md — working ON template-base
 
 This file is for contributors and agents working **on this repo**. It is NOT the template's
 `AGENTS.md` (that lives in `template/AGENTS.md` and is copied into target repos).
 
 ## What this repo is
 
-`repo-baseline` is the single source of truth for everything that should exist in every repo
+`template-base` is the single source of truth for everything that should exist in every repo
 at the org by default. It does not modify target repos directly; it **ships a Copier template**
 and **hosts reusable workflows**, and **documents** what is inherited from the org `.github`
 repo. See `README.md` for the four-tier model.

@@ -1,5 +1,5 @@
 # Git attributes — line-ending normalization + binary handling.
-# Managed by repo-baseline (Tier 1). Full-file drift enforcement — do not edit locally.
+# Managed by template-base (Tier 1). Full-file drift enforcement — do not edit locally.
 
 # Normalize all text to LF in the repository; check out native on the working tree.
 * text=auto eol=lf

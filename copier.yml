@@ -1,6 +1,6 @@
-# Copier configuration for repo-baseline.
+# Copier configuration for template-base.
 #
-# `copier copy gh:Knowledgemonger-LLC/repo-baseline <dest>`  -> scaffold a NEW repo.
+# `copier copy gh:Knowledgemonger-LLC/template-base <dest>`  -> scaffold a NEW repo.
 # `copier update`                                            -> re-apply this template to an
 #   EXISTING repo (3-way merge via .copier-answers.yml). This is the propagation/merge lane
 #   that kills drift. check_drift.py is a SEPARATE reporting/CI gate — it never merges.

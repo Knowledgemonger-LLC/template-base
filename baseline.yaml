@@ -1,4 +1,4 @@
-# baseline.yaml — SOURCE OF TRUTH for repo-baseline.
+# baseline.yaml — SOURCE OF TRUTH for template-base.
 #
 # Lists every element that should exist in EVERY repo at the org by default, what tier it
 # belongs to, and the mechanism by which it gets there. BASELINE.md (the human index) is
@@ -215,7 +215,7 @@ elements:
   - path: .github/workflows/ci.yml
     tier: 4
     mechanism: extend
-    source_of_truth: Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-ci.yml@v1
+    source_of_truth: Knowledgemonger-LLC/template-base/.github/workflows/reusable-ci.yml@v1
     applies_to: all
     required: true
     notes: >-
@@ -225,7 +225,7 @@ elements:
   - path: .github/workflows/release.yml
     tier: 4
     mechanism: extend
-    source_of_truth: Knowledgemonger-LLC/repo-baseline/.github/workflows/reusable-release.yml@v1
+    source_of_truth: Knowledgemonger-LLC/template-base/.github/workflows/reusable-release.yml@v1
     applies_to: all
     required: false
     notes: >-

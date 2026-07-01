@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Knowledgemonger-LLC/repo-baseline/scripts/baseline.schema.json",
-  "title": "repo-baseline manifest",
+  "$id": "https://github.com/Knowledgemonger-LLC/template-base/scripts/baseline.schema.json",
+  "title": "template-base manifest",
   "description": "Schema for baseline.yaml — the source of truth listing every universal repo element.",
   "type": "object",
   "additionalProperties": false,
