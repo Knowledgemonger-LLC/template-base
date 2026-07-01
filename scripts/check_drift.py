@@ -222,6 +222,10 @@ def render_tree(dest: Path, ctx: dict) -> None:
     tdir = ROOT / "template"
     for root, _, files in os.walk(tdir):
         for fn in files:
+            # Copier bookkeeping: rendered by Copier itself (uses _copier_answers/to_nice_yaml),
+            # not a baseline element and not renderable by a plain Jinja env — skip it.
+            if fn.startswith(".copier-answers"):
+                continue
             src = Path(root) / fn
             rel = str(src.relative_to(tdir))
             name = rel[:-6] if rel.endswith(".jinja") else rel

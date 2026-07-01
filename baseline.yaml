@@ -27,6 +27,9 @@ version: 1
 # NOT authoritative for the org; this is settled, do not re-raise.
 org: Knowledgemonger-LLC
 
+# NOTE: template/.copier-answers.yml.jinja ships in every repo (Copier writes .copier-answers.yml
+# and 3-way-merges from it on `copier update`). It is propagation BOOKKEEPING, not a tiered
+# baseline element, so it is intentionally absent from `elements` and excluded from drift.
 elements:
   # ───────────────────────── Tier 1 — Truly universal files (copy) ─────────────────────────
   - path: .editorconfig
