@@ -55,6 +55,19 @@ project_name:
   type: str
   help: "Human-readable project name."
 
+# Interim single-template archetype selector. Recorded in .copier-answers.yml to capture intent;
+# template-base has NO archetype-specific files yet. When an archetype accumulates enough unique
+# files, it graduates to its own template-<name> repo that COMPOSES template-base (see README).
+archetype:
+  type: str
+  help: "Repo archetype (interim; graduates to a template-<archetype> repo later)."
+  default: base
+  choices:
+    - base
+    - api
+    - web
+    - sagemaker
+
 # ---- Archetype blanks (filled per stack; seed the Tier 3 files) ----
 stack:
   type: str

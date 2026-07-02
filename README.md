@@ -41,9 +41,11 @@ Consequence: **never duplicate base files into an archetype template.** An arche
 what is unique to it; everything universal stays in template-base and arrives by composition.
 
 > **Current state:** template-base is the *only* template today; archetypes are the documented next
-> layer, not yet built. A small archetype-specific need can live inside template-base until it
-> accumulates enough unique files to **graduate** into its own `template-<name>` repo — moving a
-> concern out of the base is a deliberate step, not the default.
+> layer, not yet built. An `archetype` answer (`base` | `api` | `web` | `sagemaker`) is recorded in
+> `.copier-answers.yml` to capture intent, but ships no archetype-specific files yet. A small
+> archetype-specific need can live inside template-base until it accumulates enough unique files to
+> **graduate** into its own `template-<name>` repo — moving a concern out of the base is a deliberate
+> step, not the default.
 
 ### Naming convention: `template-<role>`
 
