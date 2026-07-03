@@ -68,6 +68,16 @@ archetype:
     - web
     - sagemaker
 
+# ---- Features (opt-in workflow toggles) ----
+# The release caller (.github/workflows/release.yml) is NOT universal: it triggers on `v*`
+# tags and would fail / mis-publish in repos that don't publish. Default FALSE — enable only
+# for publishing repos (libraries/packages that define a `release` script). When false, Copier
+# skips the file entirely via the conditional filename on the release template.
+include_release_workflow:
+  type: bool
+  help: "Ship the release workflow (.github/workflows/release.yml)? Only for publishing repos."
+  default: false
+
 # ---- Archetype blanks (filled per stack; seed the Tier 3 files) ----
 stack:
   type: str

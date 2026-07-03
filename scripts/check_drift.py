@@ -216,9 +216,17 @@ def question_values(placeholder=True) -> dict:
 
 
 def render_tree(dest: Path, ctx: dict) -> None:
-    """Render the whole template/ tree into dest (Copier-style: strip .jinja)."""
+    """Render the whole template/ tree into dest (Copier-style: template the path, strip .jinja).
+
+    Faithfully emulates Copier's answer-gated files: a conditional filename (e.g.
+    ``{% if include_release_workflow %}release.yml{% endif %}.jinja``) renders to an empty
+    basename when the answer is falsy, and Copier skips it — so we skip it too.
+    """
     import os
 
+    from jinja2 import Environment, StrictUndefined
+
+    env = Environment(undefined=StrictUndefined, keep_trailing_newline=True)
     tdir = ROOT / "template"
     for root, _, files in os.walk(tdir):
         for fn in files:
@@ -228,7 +236,10 @@ def render_tree(dest: Path, ctx: dict) -> None:
                 continue
             src = Path(root) / fn
             rel = str(src.relative_to(tdir))
-            name = rel[:-6] if rel.endswith(".jinja") else rel
+            rendered_rel = env.from_string(rel).render(**ctx)  # template the path itself
+            name = rendered_rel[:-6] if rendered_rel.endswith(".jinja") else rendered_rel
+            if os.path.basename(name) == "":  # conditional file gated off -> skipped, like Copier
+                continue
             out = dest / name
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_text(render_source(str(src.relative_to(ROOT)), ctx))

@@ -226,10 +226,15 @@ elements:
     tier: 4
     mechanism: extend
     source_of_truth: Knowledgemonger-LLC/template-base/.github/workflows/reusable-release.yml@v1
-    applies_to: all
+    applies_to: [publishing]
     required: false
     notes: >-
       Thin caller for the shared release/publish reusable workflow. Pin to @v1 or a SHA.
+      OPT-IN — NOT universal: gated by the Copier question `include_release_workflow`
+      (default false). It fires on `v*` tags and would fail / mis-publish in non-publishing
+      repos, so Copier ships it ONLY when enabled (conditional filename skips it otherwise).
+      As an `extend` element it is never drift-managed, so check_drift does NOT flag it missing
+      in repos that opted out.
 
   - path: eslint.config.js
     tier: 4
