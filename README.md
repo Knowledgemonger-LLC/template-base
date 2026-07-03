@@ -71,11 +71,11 @@ exists, the corresponding feature silently no-ops or errors:
 
 | Tier | What | Mechanism |
 |------|------|-----------|
-| 1 | Truly universal files (`.editorconfig`, `.gitattributes`, base `.gitignore`, `LICENSE`) | **copy** — template + drift sync |
+| 1 | Truly universal files (`.editorconfig`, `.gitattributes`, base `.gitignore`, `LICENSE`) | **copy** — template + drift sync. *Exception:* `LICENSE` is **generate-once** — scaffolded with `license_holder`/`license_year` stamped, but the license body is a per-repo choice (proprietary \| MIT \| Apache-2.0) and is **not** drift-enforced, unlike the other Tier-1 files. |
 | 2 | Governance / community-health (`CONTRIBUTING`, `SECURITY`, `CODE_OF_CONDUCT`, issue/PR templates) | **inherit** — public org `.github` repo; no local copies |
 | 2* | `CODEOWNERS` — governance, but **cannot inherit** (GitHub reads it only from the repo itself) | **copy** — shipped by template-base to `.github/CODEOWNERS` |
 | 3 | Agentic context (`AGENTS.md`, thin `CLAUDE.md`, `.claude/settings.json`, `.claude/commands/`) | **copy** — thin, reference shared rules |
-| 4 | Universal in kind, specific in form (CI/CD, lint/format, tsconfig, Renovate, pre-commit) | **extend** — shared packages + reusable workflows referenced in a few lines. (Renovate & pre-commit ship a thin **copy** pointer that *extends* an external preset — synced via managed-keys / marker-block drift.) |
+| 4 | Universal in kind, specific in form (CI/CD, lint/format, tsconfig, Renovate, pre-commit) | **extend** — shared packages + reusable workflows referenced in a few lines. **Renovate:** a thin **copy** pointer that *extends* the external `renovate-config` preset (managed-keys drift) — hence the prerequisite repo below. **pre-commit:** a **copied base** of universal hooks in a marker block, with **no** external preset — it is therefore **not** a prerequisite repo (nothing external to stand up). |
 
 ## How drift is killed
 
