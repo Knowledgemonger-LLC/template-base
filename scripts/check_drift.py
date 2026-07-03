@@ -63,12 +63,33 @@ def context_for(target: Path) -> dict:
     return ctx
 
 
+def _copier_bool(value):
+    """Mimic Copier's Jinja ``| bool`` (jinja2-ansible-filters), which CLI ``--data``
+    needs because scalars arrive as strings: ``include_release_workflow=false`` is the
+    string ``"false"`` (truthy to plain ``{% if %}``). Real bools pass through; only the
+    recognized truthy tokens are True, so ``"false"``/``"no"``/``"0"``/``""`` are False.
+    """
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() in ("true", "yes", "on", "1", "y", "t")
+    return bool(value)
+
+
+def _jinja_env():
+    """A Jinja env matching how Copier renders: StrictUndefined plus the ``bool`` filter,
+    so ``{% if flag | bool %}`` gates evaluate here exactly as they do under Copier."""
+    from jinja2 import Environment, StrictUndefined
+
+    env = Environment(undefined=StrictUndefined, keep_trailing_newline=True)
+    env.filters["bool"] = _copier_bool
+    return env
+
+
 def render_source(source_of_truth: str, ctx: dict) -> str:
     text = (ROOT / source_of_truth).read_text()
     if source_of_truth.endswith(".jinja"):
-        from jinja2 import Environment, StrictUndefined
-
-        env = Environment(undefined=StrictUndefined, keep_trailing_newline=True)
+        env = _jinja_env()
         text = env.from_string(text).render(**ctx)
     return text
 
@@ -224,9 +245,7 @@ def render_tree(dest: Path, ctx: dict) -> None:
     """
     import os
 
-    from jinja2 import Environment, StrictUndefined
-
-    env = Environment(undefined=StrictUndefined, keep_trailing_newline=True)
+    env = _jinja_env()
     tdir = ROOT / "template"
     for root, _, files in os.walk(tdir):
         for fn in files:
