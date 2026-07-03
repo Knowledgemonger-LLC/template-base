@@ -55,6 +55,29 @@ what is unique to it; everything universal stays in template-base and arrives by
 
 The shared `template-` prefix groups the whole scaffolding family together in the org repo listing.
 
+## Usage
+
+### Create a new repo from this template
+    copier copy git@github.com:Knowledgemonger-LLC/template-base.git <new-repo-dir>
+Copier prompts for the answers defined in `copier.yml` (org, project name, license, stack,
+package manager, the build/test/run/lint commands). Pin to the released major:
+    copier copy --vcs-ref=v1 git@github.com:Knowledgemonger-LLC/template-base.git <new-repo-dir>
+
+Then create the repo on GitHub and push:
+    cd <new-repo-dir>
+    git init -b main && git add -A && git commit -m "Initial from template-base"
+    git remote add origin git@github.com:Knowledgemonger-LLC/<new-repo>.git
+    git push -u origin main
+
+### Update an existing repo when template-base changes
+Run inside a repo previously generated from the template (reads its .copier-answers.yml):
+    copier update
+This 3-way-merges baseline changes in while preserving local edits. Consumers pinned to @v1
+also pick up reusable-workflow fixes automatically via the moving major tag.
+
+> For scripted/non-interactive generation, pass answers with --data, e.g.
+> `--data org=Knowledgemonger-LLC --data license=proprietary …` — but interactive is the norm.
+
 ## Prerequisites (external repos that must exist)
 
 Generated repos depend on three "reference is correct, target must be created" items. Until each
