@@ -90,6 +90,16 @@ exists, the corresponding feature silently no-ops or errors:
 3. **Public `Knowledgemonger-LLC/renovate-config`** — the preset the thin `renovate.json` extends.
    Without it, Renovate errors in every generated repo.
 
+## Repo visibility policy
+- template-base, renovate-config, .github → PUBLIC. Required for the machinery:
+  reusable-workflow calls, Renovate github> preset resolution, and community-health
+  inheritance all need (or are simplest with) public hosts. These repos hold only
+  scaffolding/governance boilerplate — no product IP or secrets.
+- Product repos → PRIVATE by default. They consume the public baseline; nothing about
+  being private blocks that (public reusable workflows are callable from private repos).
+- If template-base ever must go private, enable Settings → Actions → General → Access →
+  "org-accessible" so private repos can still call its reusable workflows.
+
 ## The four-tier model
 
 | Tier | What | Mechanism |

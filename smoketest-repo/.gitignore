@@ -1,0 +1,41 @@
+# Base .gitignore for all Knowledgemonger-LLC repos — managed by template-base (Tier 1).
+#
+# This is a BASE to EXTEND. Keep it minimal: stack-specific ignores (node_modules/, __pycache__/,
+# target/, build artifacts, etc.) are a Tier 4 concern and belong with your stack tooling, NOT here.
+# Append repo-specific entries BELOW this base block; leave the base intact so it stays in sync.
+
+# ── OS cruft ──
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+
+# ── Editor / IDE ──
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Environment / secrets ── (never commit real secrets)
+.env
+.env.*
+!.env.example
+
+# ── Logs ──
+*.log
+logs/
+
+# ── Test / coverage output ──
+coverage/
+.coverage
+.nyc_output/
+
+# ── Temp ──
+*.tmp
+*.bak
+tmp/
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Repo-specific ignores below this line (safe to edit; not managed by the baseline).

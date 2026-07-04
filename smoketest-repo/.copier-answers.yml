@@ -1,0 +1,18 @@
+# Changes here will be overwritten by Copier; do not edit manually.
+# Records the template source + your answers so `copier update` can 3-way merge future
+# baseline updates. Commit this file — it is intentionally NOT gitignored.
+_commit: v1
+_src_path: git@github.com:Knowledgemonger-LLC/template-base.git
+archetype: base
+build_command: pnpm build
+default_owner: '@Knowledgemonger-LLC/maintainers'
+license: proprietary
+license_holder: Knowledgemongers LLC
+license_year: '2026'
+lint_command: pnpm lint
+org: Knowledgemonger-LLC
+pkg_manager: pnpm
+project_name: smoketest-repo
+run_command: pnpm dev
+stack: TypeScript / Node 20
+test_command: pnpm test

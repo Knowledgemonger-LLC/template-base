@@ -1,0 +1,15 @@
+# Thin CI caller (Tier 4, extend). Logic lives in the reusable workflow hosted in
+# template-base; this file just references it. Pinned to @v1 — never @main.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    uses: Knowledgemonger-LLC/template-base/.github/workflows/reusable-ci.yml@v1
+    with:
+      package-manager: pnpm
+      node-version: "20"
