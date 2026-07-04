@@ -1,7 +1,9 @@
-# Reusable CI workflow (Tier 4) — hosted here as the single source of truth.
-# Target repos call it from a thin .github/workflows/ci.yml, pinned to @v1 (or a SHA).
-# See examples/caller-ci.yml.
-name: reusable-ci
+# Reusable NODE CI workflow — Node-specific (setup-node, pnpm/npm, `<pm> run lint/test/build`).
+# NOT a template-base universal: the base ships no language CI. This is a NODE-family element
+# that Node archetypes (template-node / template-next-sanity) provide; Node target repos call it
+# from a thin .github/workflows/ci.yml, pinned to @v1 (or a SHA). See examples/caller-ci.yml.
+# INTERIM: hosted here for now; relocates to the Node archetype template later.
+name: reusable-node-ci
 
 on:
   workflow_call:

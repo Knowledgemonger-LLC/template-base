@@ -215,12 +215,17 @@ elements:
   - path: .github/workflows/ci.yml
     tier: 4
     mechanism: extend
-    source_of_truth: Knowledgemonger-LLC/template-base/.github/workflows/reusable-ci.yml@v1
-    applies_to: all
-    required: true
+    source_of_truth: Knowledgemonger-LLC/template-base/.github/workflows/reusable-node-ci.yml@v1
+    applies_to: [node]
+    required: false
     notes: >-
-      Thin caller that `uses:` this repo's reusable CI workflow (workflow_call). MUST pin to
-      @v1 or a commit SHA, never @main. Logic lives in the reusable workflow hosted here.
+      NODE-ONLY, not universal. CI is language-specific: Node/npm CI does not apply to Python
+      or Terraform repos (no package.json, no `<pm> run` scripts). template-base itself ships NO
+      language CI — this thin caller is provided by a NODE archetype (template-node /
+      template-next-sanity), not by the base, so Copier does NOT emit it for base/non-Node repos.
+      When present it MUST pin to @v1 or a commit SHA, never @main. As an `extend` element it is
+      never drift-managed. INTERIM: the reusable-node-ci.yml it calls is hosted in template-base
+      for now and RELOCATES to the Node archetype template later (physical move is a follow-up).
 
   - path: .github/workflows/release.yml
     tier: 4

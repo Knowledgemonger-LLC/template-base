@@ -68,6 +68,24 @@ archetype:
     - web
     - sagemaker
 
+# Ecosystem / language identity — ORTHOGONAL to `archetype`. `archetype` is the repo SHAPE
+# (api / web / ml service); `language` is the runtime ECOSYSTEM. A Next.js site and a Node
+# service share language=node but differ in archetype. Downstream archetype templates and CI
+# selection key off `language`; template-base itself ships NO language-specific CI (see the
+# reusable-node-ci.yml note in baseline.yaml). Default `none` keeps the base language-agnostic.
+# NOTE: the archetype choices above still carry some ecosystem flavor (web/api≈node,
+# sagemaker≈python); realigning them to be purely shape-based is a later follow-up, out of
+# scope for this de-leak.
+language:
+  type: str
+  help: "Runtime ecosystem for this repo. CI/archetype selection keys off this. 'none' = language-agnostic base."
+  default: none
+  choices:
+    - none
+    - node
+    - python
+    - terraform
+
 # ---- Features (opt-in workflow toggles) ----
 # The release caller (.github/workflows/release.yml) is NOT universal: it triggers on `v*`
 # tags and would fail / mis-publish in repos that don't publish. Default FALSE — enable only
@@ -86,8 +104,17 @@ stack:
 
 pkg_manager:
   type: str
-  help: "Primary package manager (drives the safe-command allowlist in .claude/settings.json)."
-  default: "npm"
+  help: >-
+    Primary package/dependency manager for this repo's language (e.g. npm/pnpm for Node,
+    pip/uv/poetry for Python). Drives the safe-command allowlist in .claude/settings.json.
+    No default — it is language-specific and must be answered.
+
+# Universal SLOT (Tier 4: universal in kind, specific in form): every repo pins the version of
+# its runtime — Node 24.16.0, Python 3.12, a Terraform version, etc. No default (no Node value
+# imposed); the answer is required and recorded for downstream archetype CI to consume.
+runtime_version:
+  type: str
+  help: "Version of the language runtime to pin (e.g. \"24.16.0\" for Node, \"3.12\" for Python)."
 
 build_command:
   type: str

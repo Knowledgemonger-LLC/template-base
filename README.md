@@ -108,7 +108,14 @@ exists, the corresponding feature silently no-ops or errors:
 | 2 | Governance / community-health (`CONTRIBUTING`, `SECURITY`, `CODE_OF_CONDUCT`, issue/PR templates) | **inherit** — public org `.github` repo; no local copies |
 | 2* | `CODEOWNERS` — governance, but **cannot inherit** (GitHub reads it only from the repo itself) | **copy** — shipped by template-base to `.github/CODEOWNERS` |
 | 3 | Agentic context (`AGENTS.md`, thin `CLAUDE.md`, `.claude/settings.json`, `.claude/commands/`) | **copy** — thin, reference shared rules |
-| 4 | Universal in kind, specific in form (CI/CD, lint/format, tsconfig, Renovate, pre-commit) | **extend** — shared packages + reusable workflows referenced in a few lines. **Renovate:** a thin **copy** pointer that *extends* the external `renovate-config` preset (managed-keys drift) — hence the prerequisite repo below. **pre-commit:** a **copied base** of universal hooks in a marker block, with **no** external preset — it is therefore **not** a prerequisite repo (nothing external to stand up). |
+| 4 | Universal in kind, specific in form (lint/format, tsconfig, Renovate, pre-commit) | **extend** — shared packages + reusable workflows referenced in a few lines. **CI:** the abstract *slots* are universal (every repo has a `pkg_manager`, a `runtime_version`, and build/test/lint/run commands — these stay as Copier questions), but the **CI workflow itself is language-specific and NOT shipped by the base** — Node/npm CI does not apply to Python or Terraform repos. CI is a **language-archetype** concern; see the `reusable-node-ci.yml` note below. **Renovate:** a thin **copy** pointer that *extends* the external `renovate-config` preset (managed-keys drift) — hence the prerequisite repo below. **pre-commit:** a **copied base** of universal hooks in a marker block, with **no** external preset — it is therefore **not** a prerequisite repo (nothing external to stand up). |
+
+> **Note — `reusable-node-ci.yml` is Node-family, hosted here INTERIM.** template-base ships no
+> language CI to generated repos. The Node reusable CI workflow
+> (`.github/workflows/reusable-node-ci.yml`) and its example caller (`examples/caller-ci.yml`)
+> are **Node-only** and belong to a Node archetype (`template-node` / `template-next-sanity`).
+> They live in template-base for now; the physical relocation to that archetype is a planned
+> follow-up. Non-Node repos (Python/ML/SageMaker/Glue/dbt, Terraform) do not receive or call it.
 
 ## How drift is killed
 
