@@ -55,27 +55,111 @@ what is unique to it; everything universal stays in template-base and arrives by
 
 The shared `template-` prefix groups the whole scaffolding family together in the org repo listing.
 
-## Usage
+## Create a new archetype template from template-base (`template-<functional-domain>`)
 
-### Create a new repo from this template
-    copier copy git@github.com:Knowledgemonger-LLC/template-base.git <new-repo-dir>
-Copier prompts for the answers defined in `copier.yml` (org, project name, license, stack,
-package manager, the build/test/run/lint commands). Pin to the released major:
+When a set of files is unique to one functional domain (api, web, sagemaker, …) and has grown
+past what belongs inside the base, graduate it into its own `template-<domain>` repo that
+**composes** template-base rather than forking it. The archetype ships **only** the files unique
+to that domain; everything universal keeps flowing from template-base by composition (see
+[Composition](#composition-archetypes-layer-on-top-of-the-base)).
+
+The walkthrough below creates `template-api` as a running example; substitute your own domain for
+`api` throughout. It assumes you have this repo checked out (e.g. at `~/Repos/template-base`) and
+run the commands from its parent dir (`~/Repos`).
+
+1. **Create the archetype repo, then scaffold its authoring layer.** First generate it *from*
+   template-base so it carries its own baseline (`.editorconfig`, `LICENSE`, `AGENTS.md`,
+   `.claude/`, …) — Copier prompts you; answer for the archetype repo itself (`project_name`
+   `template-api`, `archetype` `api`, and so on):
+
+        copier copy --vcs-ref=v1 git@github.com:Knowledgemonger-LLC/template-base.git template-api
+
+   Then run the scaffolder (it lives in this repo, not the new one) to lay the authoring layer on
+   top — it writes `copier.yml` (renamed answers file + hidden `archetype`/`language` intent),
+   creates `template/`, and seeds a pinned `@v1` CI caller for Node archetypes:
+
+        python template-base/scripts/new_archetype.py api ./template-api --language node
+
+   The script refuses to run on a dir not bootstrapped from template-base and won't overwrite
+   existing files without `--force`.
+2. **Ship only what is unique to the domain — by editing, no `copier`.** Open `template-api/` in
+   your editor. Do **not** copy any Tier 1–4 file template-base already delivers — duplicating a
+   base file into an archetype is the one thing composition exists to prevent. Put domain-specific
+   CI (e.g. the Node reusable-CI caller), configs, and scaffolding under `template-api/template/`.
+3. **Author the domain layer.** The generated `copier.yml` already pins `_subdirectory: template`
+   and a distinct `_answers_file: .copier-answers-api.yml` (so this layer `copier update`s
+   independently of the base and never clobbers `.copier-answers.yml`), and records the
+   `archetype`/`language` intent. What's left is yours: fill in the api-specific questions in
+   `copier.yml` and rewrite `README.md`/`AGENTS.md` to describe the api layer. Leave the universal
+   questions (`org`, `license`, `runtime_version`, the build/test/run/lint commands, …) to
+   template-base — the base pass answers them; don't re-ask them here.
+4. **Publish and version it — with `git`/`gh`, no `copier`.** Copier only wrote files; you still
+   init the repo, push it, and cut the tags consumers pin to:
+
+        cd template-api
+        git init -b main && git add -A && git commit -m "Initial template-api from template-base"
+        gh repo create Knowledgemonger-LLC/template-api --public --source=. --remote=origin --push
+        git tag v1.0.0 && git push origin v1.0.0    # immutable release
+        git tag v1 v1.0.0 && git push origin v1      # moving major (first release only; see Releasing)
+
+   Consumers then compose `template-base@v1` + `template-api@v1`.
+
+### Repeatable setup checklist
+
+`scripts/new_archetype.py` handles the mechanical rows; the editorial rows are judgment work it
+deliberately leaves to you (a blind rename of the base's docs would be wrong — an archetype's
+README describes a *different, smaller* thing than the base's).
+
+| Step | Automated by the script? |
+|---|---|
+| `copier.yml` with `_answers_file: .copier-answers-<domain>.yml` | ✅ |
+| Hidden `archetype`/`language` intent recorded for generated repos | ✅ |
+| `template/` created; Node archetypes get a pinned `@v1` CI caller | ✅ |
+| Rewrite `README.md` / `AGENTS.md` for the archetype layer | ❌ editorial |
+| Author the domain-specific `copier.yml` questions and `template/` files | ❌ editorial |
+| Verify `template/` duplicates no base-owned file (anti-duplication rule) | ❌ review |
+| Commit and cut a `v1` tag so callers can pin `template-<domain>@v1` | ❌ release |
+
+## Create a new repo from template-base
+
+The common case: scaffold an actual product repo from the baseline. Two variants — a plain baseline
+repo, or a repo that also composes an archetype.
+
+### Plain baseline repo (template-base only)
+
     copier copy --vcs-ref=v1 git@github.com:Knowledgemonger-LLC/template-base.git <new-repo-dir>
 
-Then create the repo on GitHub and push:
+Copier prompts for the answers in `copier.yml` (org, project name, license, stack, package
+manager, runtime version, the build/test/run/lint commands). Omit `--vcs-ref=v1` to track `main`
+(not recommended once `v1` exists). Then create the repo on GitHub and push:
+
     cd <new-repo-dir>
     git init -b main && git add -A && git commit -m "Initial from template-base"
     git remote add origin git@github.com:Knowledgemonger-LLC/<new-repo>.git
     git push -u origin main
 
-### Update an existing repo when template-base changes
-Run inside a repo previously generated from the template (reads its .copier-answers.yml):
-    copier update
-This 3-way-merges baseline changes in while preserving local edits. Consumers pinned to @v1
-also pick up reusable-workflow fixes automatically via the moving major tag.
+### Repo composed from an archetype (base + archetype)
+To also get an archetype's specialized scaffold (e.g. `template-api`), apply template-base first,
+then layer the archetype on top of the **same** directory. Each pass writes its own answers file,
+so the repo can later `copier update` from each source independently:
 
-> For scripted/non-interactive generation, pass answers with --data, e.g.
+    copier copy --vcs-ref=v1 git@github.com:Knowledgemonger-LLC/template-base.git      <new-repo-dir>
+    copier copy --vcs-ref=v1 git@github.com:Knowledgemonger-LLC/template-<domain>.git   <new-repo-dir>
+
+Then `git init`/push as above. (Those archetypes are built via
+[Create a new archetype template](#create-a-new-archetype-template-from-template-base-template-functional-domain).)
+
+### Update an existing repo when template-base changes
+Run inside a repo previously generated from the template (reads its `.copier-answers.yml`):
+
+    copier update
+
+This 3-way-merges baseline changes in while preserving local edits. A composed repo has one
+answers file per layer, so `copier update` re-merges each independently — the universal layer from
+template-base, the domain layer from `template-<domain>`. Consumers pinned to `@v1` also pick up
+reusable-workflow fixes automatically via the moving major tag.
+
+> For scripted/non-interactive generation, pass answers with `--data`, e.g.
 > `--data org=Knowledgemonger-LLC --data license=proprietary …` — but interactive is the norm.
 
 ## Prerequisites (external repos that must exist)
@@ -89,6 +173,7 @@ exists, the corresponding feature silently no-ops or errors:
    no-ops. Holds all five Tier-2 file types — but NOT CODEOWNERS (see below).
 3. **Public `Knowledgemonger-LLC/renovate-config`** — the preset the thin `renovate.json` extends.
    Without it, Renovate errors in every generated repo.
+
 
 ## Repo visibility policy
 - template-base, renovate-config, .github → PUBLIC. Required for the machinery:
