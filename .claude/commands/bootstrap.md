@@ -28,4 +28,5 @@ Re-point these:
    recording that this repo was created from template-base, with today's date.
 
 Then report what you changed and anything you could not determine. Offer to delete this command
-file — it has done its job and does not apply again.
+file — it has done its job and does not apply again. If I accept, also drop its line from the
+**Commands** list in `CLAUDE.md`, so that list does not point at a command the repo no longer has.
