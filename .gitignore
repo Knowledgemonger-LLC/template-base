@@ -1,8 +1,8 @@
-# Base .gitignore for all {{ org }} repos — managed by template-base (Tier 1).
+# Base .gitignore.
 #
-# This is a BASE to EXTEND. Keep it minimal: stack-specific ignores (node_modules/, __pycache__/,
-# target/, build artifacts, etc.) are a Tier 4 concern and belong with your stack tooling, NOT here.
-# Append repo-specific entries BELOW this base block; leave the base intact so it stays in sync.
+# A BASE to EXTEND. Keep it minimal: stack-specific ignores (node_modules/, __pycache__/,
+# target/, build artifacts) belong with your stack tooling, not here. Append repo-specific
+# entries below.
 
 # ── OS cruft ──
 .DS_Store
@@ -38,4 +38,4 @@ coverage/
 tmp/
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Repo-specific ignores below this line (safe to edit; not managed by the baseline).
+# Repo-specific ignores below this line.

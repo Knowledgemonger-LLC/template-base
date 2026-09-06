@@ -5,9 +5,9 @@ model: sonnet
 
 Run the **implements** step of the Change protocol in `AGENTS.md`.
 
-1. Name the approved decision this work follows from and where it is recorded — `DOMAIN_MODEL.md`,
-   `GLOSSARY.md`, an interface contract, or an approved write-up in this conversation. Do this
-   before editing anything.
+1. Name the approved decision this work follows from and where it is recorded — `GLOSSARY.md`,
+   an interface contract, or an approved write-up in this conversation. Do this before editing
+   anything.
 2. Treat it as fixed input. Do not re-decide it, re-scope it, or improve on it. If it looks wrong,
    stop and say so rather than working around it.
 3. Implement it. Edits apply without prompting, so commit at each logical checkpoint — git is the

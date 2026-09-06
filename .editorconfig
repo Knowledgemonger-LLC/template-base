@@ -1,5 +1,4 @@
 # EditorConfig — universal editor defaults. https://editorconfig.org
-# Managed by template-base (Tier 1). Full-file drift enforcement — do not edit locally.
 root = true
 
 [*]

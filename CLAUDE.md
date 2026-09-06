@@ -1,20 +1,23 @@
-# CLAUDE.md
+# CLAUDE.md — template-base
 
-Read **[AGENTS.md](AGENTS.md)** first — it holds the canonical rules for working on this repo.
-This file adds only Claude-specific notes.
+**[AGENTS.md](AGENTS.md) is the source of truth — read it first.** This file holds only
+Claude-specific notes and must not duplicate AGENTS.md.
 
-## Claude-specific notes
-
-- `BASELINE.md` is generated from `baseline.yaml`. Do not hand-edit it; edit the YAML and run
-  `python scripts/gen_baseline_md.py`.
-- Only `template/` is copied into target repos. Do not add target-repo files outside `template/`.
-- Reusable-workflow callers must pin to `@v1` or a SHA, never `@main`.
-- Use `/code-review` on your working diff before committing changes to the manifest or scripts.
+## Commands
+- `/design` — work out a decision and write it up for approval (the *defines* step).
+- `/implement` — carry out an already-approved decision (the *implements* step).
+- `/bootstrap` — run once in a fresh copy of this repo to re-point it at its own identity.
 
 ## Permissions
-Tooling permissions are enforced in `.claude/settings.json`, not here. Posture:
-read-only and local-reversible commands (inspection, validation scripts, `git add`/
-`commit`, file edits via acceptEdits) run automatically; anything touching the network,
-the remote, or releases (`pip install`, `git push`, `git tag`, `gh`, `copier copy`)
-prompts; `sudo`/`rm -rf`/`curl` and secret reads (`.env`, `~/.ssh`) are denied.
-Edit the allow/ask/deny lists in settings.json to change this.
+Permission rules live in [.claude/settings.json](.claude/settings.json). Policy: file edits
+apply without prompting (`defaultMode: acceptEdits`), so commit at each logical checkpoint —
+git is the undo, not the edit prompt. `git push` prompts (ask); `sudo`, `rm -rf`, reads of
+`.env*`, and reads of `~/.ssh/**` are denied. Do not weaken these.
+
+## MCP servers
+<!-- List repo-specific MCP servers and how to authenticate them, or "none". -->
+none
+
+## Subdirectory overrides
+<!-- Note any nested AGENTS.md / CLAUDE.md that override this one for a subtree. -->
+none

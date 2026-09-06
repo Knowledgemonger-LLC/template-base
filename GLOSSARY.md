@@ -1,9 +1,4 @@
-# GLOSSARY — {{ project_name }}
-
-<!-- baseline:start -->
-<!-- Managed by template-base (Tier 3). The content INSIDE this block is synced across all
-     {{ org }} repos via `copier update`; edits here will be overwritten on the next update.
-     Put this repo's actual terms OUTSIDE this block, where they are preserved. -->
+# GLOSSARY — template-base
 
 **This file is the single source for what words mean in this repo.** It is a decision document —
 changing it follows the Change protocol in [AGENTS.md](AGENTS.md).
@@ -23,7 +18,6 @@ not silently reintroduced.
 A term missing an entry is added in the same change **only if that change defines a decision**. A
 change that implements one rephrases in plain English, or stops and flags the term — a new canonical
 term surfacing during implementation means the decision that authorized the work was incomplete.
-<!-- baseline:end -->
 
 ## Terms
 
