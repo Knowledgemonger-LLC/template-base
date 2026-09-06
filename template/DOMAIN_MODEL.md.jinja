@@ -1,0 +1,43 @@
+# DOMAIN MODEL — {{ project_name }}
+
+<!-- baseline:start -->
+<!-- Managed by template-base (Tier 3). The content INSIDE this block is synced across all
+     {{ org }} repos via `copier update`; edits here will be overwritten on the next update.
+     Put this repo's actual entity definitions OUTSIDE this block, where they are preserved. -->
+
+**This file is the source of truth for the entity and relationship model** — the business domain and
+problem space, stated formally. It is a decision document; changing it follows the Change protocol
+in [AGENTS.md](AGENTS.md). It is authoritative for any schema, data-shape, or naming work: code
+implements this model, and where the two disagree, the code is wrong.
+
+It describes *meaning*, not storage — what an entity is, what makes it valid, how it relates to
+others. Table layouts, serialization formats, and class hierarchies are implementation.
+
+Every entity type carries a **versioned definition**. Any change to a definition bumps its version
+and records what changed and why. Adding a new entity type does not bump others.
+
+Each definition gives:
+
+- **Name** — the term, which must have a `GLOSSARY.md` entry.
+- **Version** — integer from 1, bumped on every change to this definition.
+- **Definition** — what it is, in plain English, for a reader who does not know this domain.
+- **Identity** — what makes two instances the same instance.
+- **Attributes** — each with its meaning, not merely its type. None that restate a relationship or
+  store what can be derived.
+- **Relationships** — to other entities, with cardinality and direction.
+- **Invariants** — what must always be true; the rules implementations enforce.
+- **Changelog** — one line per version: what changed and why.
+<!-- baseline:end -->
+
+## Entities
+
+<!-- One section per entity type, following the definition format in the block above. -->
+
+_No entities defined yet._
+
+## Open questions
+
+<!-- Modeling questions that are not yet settled. An open question is not a decision — do not
+     implement against one. -->
+
+_None._

@@ -6,8 +6,9 @@ REPORTING / CI GATE ONLY — this tool never merges. Propagation and merge are
 
 Three drift rules, derived from baseline.yaml:
   * full-file    (Tier 1): the rendered template must equal the target file exactly.
-  * marker-block (AGENTS.md, CLAUDE.md, .github/CODEOWNERS): only the region between the
-                 `baseline:start` / `baseline:end` markers must match the baseline; content
+  * marker-block (AGENTS.md, CLAUDE.md, .github/CODEOWNERS by default; DOMAIN_MODEL.md and
+                 GLOSSARY.md via an explicit `drift:` in the manifest): only the region between
+                 the `baseline:start` / `baseline:end` markers must match the baseline; content
                  outside the block is the repo's own. Works for both <!-- --> (markdown) and
                  # (CODEOWNERS) comment styles.
   * managed-keys (.claude/settings.json): permissions.deny and permissions.defaultMode must

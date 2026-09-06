@@ -9,8 +9,10 @@ Claude-specific notes and must not duplicate AGENTS.md.
 
 ## Permissions
 Permission rules live in [.claude/settings.json](.claude/settings.json). Baseline policy:
-`git push` prompts (ask); `sudo`, `rm -rf`, reads of `.env*`, and reads of `~/.ssh/**` are
-denied. Do not weaken these — they are drift-managed.
+file edits apply without prompting (`defaultMode: acceptEdits`), so commit at each logical
+checkpoint — git is the undo, not the edit prompt. `git push` prompts (ask); `sudo`, `rm -rf`,
+reads of `.env*`, and reads of `~/.ssh/**` are denied. Do not weaken these — they are
+drift-managed.
 <!-- baseline:end -->
 
 ## MCP servers
