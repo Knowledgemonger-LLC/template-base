@@ -57,7 +57,7 @@ The shared `template-` prefix groups the family together in the org repo listing
 | `GLOSSARY.md` | Single source for what words mean in the repo: coined vocabulary, redefined ordinary words, domain terms of art. |
 | `.claude/settings.json` | Permission posture: edits apply without prompting, `git push` asks, and `sudo` / `rm -rf` / reads of `.env*` and `~/.ssh/**` are denied. Git is the undo. Also selects the output style. |
 | `.claude/skills/change-protocol/` | The full Change protocol — which files define a decision, why approval is per decision rather than per edit, when to stop mid-implementation. Loaded on demand, so it costs nothing until it is relevant. |
-| `.claude/commands/` | `/decide` (work a decision out), `/implement` (carry an approved one out), `/bootstrap` (re-point a fresh copy at its own identity). |
+| `.claude/commands/` | `/bootstrap` — re-points a fresh copy at its own identity. Marked manual-only, so Claude cannot fire it at a repo you have already customised. |
 | `.claude/output-styles/` | `Handoff` — makes every turn-ending message readable by someone who has not been following along, and requires a recommendation with every question. Active via `outputStyle` in `.claude/settings.json`; an output style ships inert unless a settings file names it. |
 | `.editorconfig`, `.gitattributes`, `.gitignore` | Editor defaults, line-ending normalization, a minimal ignore base to extend. |
 | `LICENSE` | Proprietary by default, so open-sourcing is always an explicit choice. Swap the body if the repo is meant to be open. |

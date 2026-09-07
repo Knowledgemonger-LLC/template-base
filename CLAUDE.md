@@ -4,9 +4,8 @@
 Claude-specific notes and must not duplicate AGENTS.md.
 
 ## Commands
-- `/decide` — work out a decision and write it up for approval (the *defines* step).
-- `/implement` — carry out an already-approved decision (the *implements* step).
 - `/bootstrap` — run once in a fresh copy of this repo to re-point it at its own identity.
+  You invoke it; Claude never runs it on its own.
 
 ## Permissions
 Permission rules live in [.claude/settings.json](.claude/settings.json). Policy: file edits

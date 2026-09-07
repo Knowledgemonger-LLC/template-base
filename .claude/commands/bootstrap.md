@@ -1,5 +1,6 @@
 ---
 description: Run once in a fresh copy of template-base to re-point it at its own identity.
+disable-model-invocation: true
 ---
 
 This repo was copied from `template-base` and still describes template-base in places. Re-point

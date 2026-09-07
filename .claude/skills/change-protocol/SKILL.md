@@ -31,9 +31,3 @@ A change that sets a precedent rather than follows one — a test asserting beha
 specifies, a config value whose meaning changes rather than its number — is defining. A detail an
 approved decision implies but did not enumerate is not. Never record a design decision only in a
 code comment or a commit message.
-
-## The two steps
-
-`/decide` runs the **defines** step: work the decision out, present options, recommend one, and
-stop without editing. `/implement` runs the **implements** step: treat an approved decision as
-fixed input and carry it out. Both reference this protocol rather than restating it.
