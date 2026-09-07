@@ -4,7 +4,7 @@
 Claude-specific notes and must not duplicate AGENTS.md.
 
 ## Commands
-- `/design` — work out a decision and write it up for approval (the *defines* step).
+- `/decide` — work out a decision and write it up for approval (the *defines* step).
 - `/implement` — carry out an already-approved decision (the *implements* step).
 - `/bootstrap` — run once in a fresh copy of this repo to re-point it at its own identity.
 

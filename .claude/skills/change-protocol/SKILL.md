@@ -34,6 +34,6 @@ code comment or a commit message.
 
 ## The two steps
 
-`/design` runs the **defines** step: work the decision out, present options, recommend one, and
+`/decide` runs the **defines** step: work the decision out, present options, recommend one, and
 stop without editing. `/implement` runs the **implements** step: treat an approved decision as
 fixed input and carry it out. Both reference this protocol rather than restating it.

@@ -19,5 +19,5 @@ Do not ask permission to continue partway through: approval is per decision, not
 only for a genuine gap in the decision, something you believe is wrong, or an irreversible or
 outward-facing step.
 
-If the work turns out to require a decision nobody has made, stop and say so — that is a `/design`
+If the work turns out to require a decision nobody has made, stop and say so — that is a `/decide`
 task, not this one.
