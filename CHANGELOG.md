@@ -25,6 +25,6 @@ repo's own documentation about itself do not belong here.
 - **`defaultMode` is now `acceptEdits`.** File edits apply without prompting; git is the undo,
   not the edit prompt. The `deny` list carries the weight it used to share — it guards what git
   cannot undo.
-- **Dropped from the shipped set:** `renovate.json` (needs a preset repo that does not exist),
-  `.github/CODEOWNERS` (needs a team that does not exist, and is inert in a solo repo), and
-  `.pre-commit-config.yaml`.
+- **Dropped from the shipped set:** `renovate.json`, `.github/CODEOWNERS`, and
+  `.pre-commit-config.yaml` — to keep the seed small, so that each repo owns only what it
+  actually uses. None of the three was dropped because it was broken.

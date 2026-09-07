@@ -73,8 +73,10 @@ org-level `.github` repository. Four things about that are easy to get wrong:
   do inherit. Only the source repo's visibility matters.
 - Issue templates are **all-or-nothing**: a single local file under `.github/ISSUE_TEMPLATE/`
   makes the repo use *none* of the org defaults for that folder.
-- Until that `.github` repo exists, inheritance silently no-ops. Nothing errors; the files are
-  just absent.
+- That repo is **live** as of 2026-09-06, public, and carries all five types:
+  `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `.github/ISSUE_TEMPLATE/`, and
+  `.github/PULL_REQUEST_TEMPLATE.md`. If it is ever deleted or made private, inheritance
+  silently no-ops — nothing errors, the files are just absent.
 
 **CODEOWNERS.** Looks like governance but cannot be inherited — GitHub reads `CODEOWNERS` only
 from the repo itself. Add it per repo if you want it, and note two traps: the owning team must
@@ -82,9 +84,11 @@ exist in the org **with write access** or GitHub silently ignores the entry, and
 from Code Owners" must stay **off** while a repo has one maintainer, since nobody can satisfy
 their own required review.
 
-**Renovate.** A `renovate.json` extending `github>Knowledgemonger-LLC/renovate-config` needs that
-preset repo to exist and be public, or Renovate errors on every run. Add it once the preset is
-real.
+**Renovate.** Not shipped — but note that `Knowledgemonger-LLC/renovate-config` **is** live and
+public with a `default.json` preset, so a three-line `renovate.json` extending
+`github>Knowledgemonger-LLC/renovate-config` works today. It is left out to keep the seed small,
+not because it would break. Add it per repo, or add it back here if every repo should get
+dependency updates by default.
 
 **CI.** No workflow ships here, because CI is language-specific — a Node pipeline is meaningless
 in a Python or Terraform repo. CI belongs in the more specific templates.
