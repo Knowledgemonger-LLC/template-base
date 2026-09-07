@@ -10,8 +10,7 @@ Tool-specific files (e.g. `CLAUDE.md`) reference it; they must not duplicate it.
 
 ## Change protocol
 
-Defining files — `GLOSSARY.md`, this file, and any interface contract, schema, infrastructure
-design, or requirements document — need the change written up and approved before you edit them.
+Defining files — this file, CLAUDE.md, .claude files,  or requirements document — need the change written up and approved before you edit them.
 Use plan mode for the write-up. Everything else you edit directly, without asking.
 
 Approval is per decision, not per edit: once a decision is approved, the edits that follow from it
@@ -43,15 +42,11 @@ newcomer would and confirm they would still make sense in a repo that is not thi
 
 ## Working on template-base
 
-This repo is the starting point other repos are copied from. Four rules follow from that:
+This repo is the starting point other repos are copied from. Two rules follow from that:
 
 1. **Copies are one-way.** Nothing here propagates. A repo created from this one never looks
    upstream again, and no tooling detects that it has fallen behind.
-2. **The whole repo is the payload.** There is no `template/` subdirectory — what sits at the root
-   is exactly what a new repo receives. Anything you add here, every future repo inherits.
-3. **Record what is worth porting.** A change to the working agreement only reaches existing repos
+2. **Record what is worth porting.** A change to the working agreement only reaches existing repos
    if a human carries it there. Add a line to `CHANGELOG.md` so they know it exists.
-4. **Keep it copy-ready.** Nothing specific to template-base belongs outside this section — that is
-   what keeps `/bootstrap`'s job small. Write for the next repo, not for this one.
 
 <!-- Add repo-specific conventions, architecture notes, and gotchas below. -->

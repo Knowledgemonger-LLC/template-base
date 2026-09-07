@@ -28,10 +28,23 @@ Click **Use this template → Create a new repository** on GitHub, or:
 
     gh repo create Knowledgemonger-LLC/<new-repo> --template Knowledgemonger-LLC/template-base --private --clone
 
-Then open the new repo and run **`/bootstrap`**. A fresh copy still calls itself "template-base"
-in several places; `/bootstrap` reads the actual code and re-points the identity slots — project
-name, stack, the build/test/run/lint commands, the license holder, and the package-manager entry
-in the permission allowlist.
+A fresh copy still calls itself "template-base" in a handful of places. Fix them once, early in
+the repo's life — by hand, or by asking an agent to do it; there is no command for it, because
+the list is short enough not to need one:
+
+- **`AGENTS.md`** — the title, the **Stack** section, the **Build / Test / Run** commands (use
+  the real ones, verified against the manifest or scripts), and delete the **Working on
+  template-base** section, which describes this repo rather than yours.
+- **`CLAUDE.md`** and **`GLOSSARY.md`** — the titles.
+- **`README.md`** — replace it. This one describes template-base; yours needs its own.
+- **`LICENSE`** — confirm holder and year, and swap the body if the repo is not proprietary.
+- **`.claude/settings.json`** — add your package manager to `permissions.allow` as
+  `Bash(<pm> install:*)`. Leave `deny`, `ask`, and `defaultMode` alone.
+- **`CHANGELOG.md`** — clear this repo's entries and start over with one line recording that the
+  repo was created from template-base.
+
+If a repeatable pattern emerges from doing this a few times, that is the moment to write a
+command for it — not before.
 
 ## Create a more specific template
 
@@ -53,10 +66,9 @@ The shared `template-` prefix groups the family together in the org repo listing
 | File | Why |
 |---|---|
 | `AGENTS.md` | The working agreement, loaded every turn: boundaries, terminology and structure rules, and the Change protocol — which files need a decision approved before you edit them, and which you edit directly. Deliberately brief — anything loaded on every turn competes with the task for attention. Read by Claude Code and other agent tools. |
-| `CLAUDE.md` | Thin Claude-specific pointer. Must not duplicate `AGENTS.md`. |
+| `CLAUDE.md` | Thin Claude-specific pointer, three lines long. Must not duplicate `AGENTS.md`, and must not restate anything Claude Code already reads for itself — permissions live in `.claude/settings.json` and are read from there. |
 | `GLOSSARY.md` | Single source for what words mean in the repo: coined vocabulary, redefined ordinary words, domain terms of art. |
 | `.claude/settings.json` | Permission posture: edits apply without prompting, `git push` asks, and `sudo` / `rm -rf` / reads of `.env*` and `~/.ssh/**` are denied. Git is the undo. Also selects the output style. |
-| `.claude/commands/` | `/bootstrap` — re-points a fresh copy at its own identity. Marked manual-only, so Claude cannot fire it at a repo you have already customised. |
 | `.claude/output-styles/` | `Handoff` — makes every turn-ending message readable by someone who has not been following along, and requires a recommendation with every question. Active via `outputStyle` in `.claude/settings.json`; an output style ships inert unless a settings file names it. |
 | `.editorconfig`, `.gitattributes`, `.gitignore` | Editor defaults, line-ending normalization, a minimal ignore base to extend. |
 | `LICENSE` | Proprietary by default, so open-sourcing is always an explicit choice. Swap the body if the repo is meant to be open. |
@@ -90,6 +102,12 @@ public with a `default.json` preset, so a three-line `renovate.json` extending
 `github>Knowledgemonger-LLC/renovate-config` works today. It is left out to keep the seed small,
 not because it would break. Add it per repo, or add it back here if every repo should get
 dependency updates by default.
+
+**Slash commands and skills.** `.claude/commands/` and `.claude/skills/` are empty of anything
+shipped. A command is worth writing once a procedure has proven repeatable and awkward to
+describe in a sentence; until then it is one more file every future repo inherits and has to
+decide about. Setup used to ship as a `/bootstrap` command and no longer does — the checklist
+above is shorter than the command that automated it.
 
 **CI.** No workflow ships here, because CI is language-specific — a Node pipeline is meaningless
 in a Python or Terraform repo. CI belongs in the more specific templates.
