@@ -12,9 +12,10 @@ Tool-specific files (e.g. `CLAUDE.md`) reference it; they must not duplicate it.
 
 Defining files — `GLOSSARY.md`, this file, and any interface contract, schema, infrastructure
 design, or requirements document — need the change written up and approved before you edit them.
-Everything else you edit directly, without asking. The **`change-protocol`** skill holds the full
-rules: what counts as setting a precedent, why approval is per decision rather than per edit, and
-when to stop mid-implementation. Read it before changing a defining file.
+Use plan mode for the write-up. Everything else you edit directly, without asking.
+
+Approval is per decision, not per edit: once a decision is approved, the edits that follow from it
+need no further approval, however many files they touch.
 
 ## Terminology and structure
 
