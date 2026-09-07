@@ -3,7 +3,7 @@ description: Work out a decision and write it up for approval — the "defines" 
 model: opus
 ---
 
-Run the **defines** step of the Change protocol in `AGENTS.md`. Read that protocol first — this
+Run the **defines** step of the Change protocol. Read the **`change-protocol`** skill first — this
 command adds procedure, it does not restate or replace it.
 
 1. Read `GLOSSARY.md` and any product or requirements docs bearing on the question. Say
@@ -19,5 +19,3 @@ command adds procedure, it does not restate or replace it.
 
 Do not edit source, tests, or config, and do not implement the recommendation. Write the decision
 up, present it, and stop. Record it in the owning document only after I approve it.
-
-Follow the **Asking for human input** rules in `AGENTS.md` for the write-up.

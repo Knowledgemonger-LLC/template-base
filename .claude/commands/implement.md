@@ -3,7 +3,7 @@ description: Implement an already-approved decision — the "implements" step of
 model: sonnet
 ---
 
-Run the **implements** step of the Change protocol in `AGENTS.md`.
+Run the **implements** step of the Change protocol. Read the **`change-protocol`** skill first.
 
 1. Name the approved decision this work follows from and where it is recorded — `GLOSSARY.md`,
    an interface contract, or an approved write-up in this conversation. Do this before editing

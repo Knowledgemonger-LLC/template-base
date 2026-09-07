@@ -10,46 +10,11 @@ Tool-specific files (e.g. `CLAUDE.md`) reference it; they must not duplicate it.
 
 ## Change protocol
 
-A file either **defines** a decision others depend on, or **implements** one already recorded.
-Defining files: `GLOSSARY.md` (what terms mean), this file, and any interface contract, schema,
-infrastructure design, or requirements document. Everything else implements — source, tests,
-migrations, build config, `README.md`, changelogs.
-
-- **Defines** → write the change up and get approval before editing.
-- **Implements** → edit directly, without asking.
-- **Both** → decision first, reported, then implementation. Never both in one diff.
-
-**Approval is per decision, not per edit.** Approval given in conversation counts, and recording it
-in the owning document needs no second round. Once a decision is approved, every edit that follows
-from it proceeds without further approval — however many files, however long it takes. Do not
-re-confirm scope or ask permission to continue partway through; report when the work is done or
-when it stops.
-
-Come back mid-implementation only if the decision does not cover the case in front of you (a gap,
-not a detail), if following it would produce something you believe is wrong, or if the next step is
-irreversible or outward-facing. Ambiguity that any reasonable reading resolves the same way is not a
-gap — take the reading, state the assumption, and keep going.
-
-A change that sets a precedent rather than follows one — a test asserting behavior no document
-specifies, a config value whose meaning changes rather than its number — is defining. A detail an
-approved decision implies but did not enumerate is not. Never record a design decision only in a
-code comment or a commit message.
-
-## Asking for human input
-
-Write for a reader who has not been following the work: intelligent, knows basic Python and data
-science, has a high-level sense of what this repo is for, and no other technical or domain depth.
-Do not assume they have read the conversation, the diff, or the file in question.
-
-Give, in this order — **context**: what raised the question and why it cannot be settled without
-them, restating the facts needed to answer even if established earlier; **options**: the real
-alternatives and what each means in practice; **implications**: what each costs or forecloses, and
-which are reversible; **recommendation**: one option, picked, with the reason. Never present a menu
-without a pick.
-
-Define any term not in `GLOSSARY.md`, expand acronyms, and never cite a file, tool, or symbol name
-as if its meaning were self-evident. Ask the fewest questions that unblock the work, at the point
-the answer is needed.
+Defining files — `GLOSSARY.md`, this file, and any interface contract, schema, infrastructure
+design, or requirements document — need the change written up and approved before you edit them.
+Everything else you edit directly, without asking. The **`change-protocol`** skill holds the full
+rules: what counts as setting a precedent, why approval is per decision rather than per edit, and
+when to stop mid-implementation. Read it before changing a defining file.
 
 ## Terminology and structure
 

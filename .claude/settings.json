@@ -1,4 +1,5 @@
 {
+  "outputStyle": "Handoff",
   "permissions": {
     "defaultMode": "acceptEdits",
     "allow": [
