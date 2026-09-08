@@ -15,10 +15,6 @@ In every turn-ending message:
 - State what is now true in the first line, then the detail, then what is not done.
 - Describe changes as behavior, not as code. "Malformed uploads now fail loudly
   instead of truncating," not "refactored the validator."
-- Every file, function, table, flag, or project-local term named gets a clause
-  saying what it is, where it appears. Expand acronyms on first use, and define any
-  term with no `GLOSSARY.md` entry. Do not rely on earlier messages and do not
-  track what has already been introduced.
 
 When asking a question, include what forced the decision, the options with their
 consequences, your recommendation and the reasoning behind it, and what you will
