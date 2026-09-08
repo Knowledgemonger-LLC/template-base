@@ -35,7 +35,7 @@ the list is short enough not to need one:
 - **`AGENTS.md`** — the title, the **Stack** section, the **Build / Test / Run** commands (use
   the real ones, verified against the manifest or scripts), and delete the **Working on
   template-base** section, which describes this repo rather than yours.
-- **`CLAUDE.md`** and **`GLOSSARY.md`** — the titles.
+- **`CLAUDE.md`** — the title.
 - **`README.md`** — replace it. This one describes template-base; yours needs its own.
 - **`LICENSE`** — confirm holder and year, and swap the body if the repo is not proprietary.
 - **`.claude/settings.json`** — add your package manager to `permissions.allow` as
@@ -67,7 +67,6 @@ The shared `template-` prefix groups the family together in the org repo listing
 |---|---|
 | `AGENTS.md` | The working agreement, loaded every turn: boundaries, terminology and structure rules, and the Change protocol — which files need a decision approved before you edit them, and which you edit directly. Deliberately brief — anything loaded on every turn competes with the task for attention. Read by Claude Code and other agent tools. |
 | `CLAUDE.md` | Thin Claude-specific pointer, three lines long. Must not duplicate `AGENTS.md`, and must not restate anything Claude Code already reads for itself — permissions live in `.claude/settings.json` and are read from there. |
-| `GLOSSARY.md` | Single source for what words mean in the repo: coined vocabulary, redefined ordinary words, domain terms of art. |
 | `.claude/settings.json` | Permission posture: edits apply without prompting, `git push` asks, and `sudo` / `rm -rf` / reads of `.env*` and `~/.ssh/**` are denied. Git is the undo. Also selects the output style. |
 | `.claude/output-styles/` | `Handoff` — makes every turn-ending message readable by someone who has not been following along, and requires a recommendation with every question. Active via `outputStyle` in `.claude/settings.json`; an output style ships inert unless a settings file names it. |
 | `.editorconfig`, `.gitattributes`, `.gitignore` | Editor defaults, line-ending normalization, a minimal ignore base to extend. |
@@ -108,6 +107,14 @@ shipped. A command is worth writing once a procedure has proven repeatable and a
 describe in a sentence; until then it is one more file every future repo inherits and has to
 decide about. Setup used to ship as a `/bootstrap` command and no longer does — the checklist
 above is shorter than the command that automated it.
+
+**A glossary.** `GLOSSARY.md` used to ship and no longer does. The idea behind it — one word means
+one thing, across conversation and code — is sound and stays enforced by the **Terminology and
+structure** rules in [`AGENTS.md`](AGENTS.md), which need no file behind them. The file was the
+problem: a standalone glossary is not a convention any agent tool reads, it duplicates whatever
+domain model the repo eventually writes, and at the scale where a repo genuinely needs one it needs
+several, scoped per domain, not one at the root. Shipping it empty made every new repo inherit a
+decision it was not ready to make. Write one when a term actually collides.
 
 **CI.** No workflow ships here, because CI is language-specific — a Node pipeline is meaningless
 in a Python or Terraform repo. CI belongs in the more specific templates.
