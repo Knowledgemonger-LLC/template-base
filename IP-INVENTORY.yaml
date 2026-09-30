@@ -1,0 +1,40 @@
+# IP inventory record for this repository.
+# Fields 1-7 follow the Mnemmi IP-inventory spec: name/location, description, snapshot,
+# created, third-party rights, disposition, scope category (Exhibit F categories 1-5, gray, out).
+# Compiled 2026-09-30; master spreadsheet: ~/Repos/ip-inventory-2026-09-30.xlsx
+schema: ip-inventory/v1
+recorded: '2026-09-30'
+purpose: Mnemmi Confirmatory Assignment IP inventory (Exhibit A / Exhibit D sweep)
+name_and_location:
+  repository: template-base
+  host: github.com
+  account: Knowledgemonger-LLC (GitHub organization; IP presently owned by Daniel Y. Little)
+  url: https://github.com/Knowledgemonger-LLC/template-base
+  visibility: public
+  local_path: ~/Repos/template-base
+description: 'Starter template for new company repositories: hygiene files and AI-coding-agent working rules.'
+snapshot:
+  commit: PENDING
+  date: PENDING
+  branch: main
+  definition: The commit on main that first added this file. It is recorded by a follow-up commit, which changes
+    only this snapshot block.
+created:
+  first_commit: '2026-06-30'
+  github_repo_created: '2026-07-03'
+  mnemmi_advisory_period: Overlaps Mnemmi advisory period (began ~2026-09-08); not created for Mnemmi.
+  rewards_network_and_kelihi: 'Per owner: overlaps the Rewards Network employment and/or Kelihi engagement periods,
+    but none of it is RN or Kelihi work product (all RN/Kelihi work was performed outside this GitHub account and
+    this machine).'
+third_party_rights:
+  authors: Daniel Y. Little <dylittle@knowledgemonger.com> (21); Daniel Y. Little <dylittle@critpoint.ai> (11)
+  ownership: 'Sole author: Daniel Y. Little (commit log checked; AI-assisted commits via Claude Code only). No client
+    or employer connection.'
+  open_source_components: 'No dependencies. LICENSE: Proprietary, Knowledgemongers LLC.'
+  copyleft_flags: None.
+disposition: Out of scope (list on Exhibit A)
+scope_category: out
+scope_rationale: Generic repository template.
+exception_requested: n/a (out of scope; listed)
+planned_llc_assignment: 'No'
+unmerged_branches: None - all branches merged into main
