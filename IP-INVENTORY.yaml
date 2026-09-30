@@ -14,8 +14,8 @@ name_and_location:
   local_path: ~/Repos/template-base
 description: 'Starter template for new company repositories: hygiene files and AI-coding-agent working rules.'
 snapshot:
-  commit: PENDING
-  date: PENDING
+  commit: 3796ca22c620a3b90f770cd903419928ee3b1494
+  date: '2026-09-30'
   branch: main
   definition: The commit on main that first added this file. It is recorded by a follow-up commit, which changes
     only this snapshot block.
